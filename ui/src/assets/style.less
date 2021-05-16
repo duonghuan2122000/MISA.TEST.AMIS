@@ -1,31 +1,4 @@
-<template>
-  <div>
-    <TheNavbar />
-    <TheHeader />
-    <TheContent />
-  </div>
-</template>
 
-<script>
-//#region import
-import TheNavbar from "./components/layout/TheNavbar.vue";
-import TheHeader from "./components/layout/TheHeader.vue";
-import TheContent from "./components/layout/TheContent.vue";
-//#endregion
-//#region export
-export default {
-  //#region components
-  components: {
-    TheNavbar,
-    TheHeader,
-    TheContent,
-  },
-  //#endregion
-};
-//#endregion
-</script>
-
-<style lang="scss">
 //Stylesheet chung.
 @font-face {
   font-family: NotoSans;
@@ -33,35 +6,29 @@ export default {
 }
 
 // Biến chung.
-$navbar-width: 178px;
+@navbar-width: 226px;
 
-$header-height: 48px;
+@header-height: 48px;
 
-$icon-size: 24px;
+@icon-size: 24px;
 
-$color-white: #fff;
+@color-white: #fff;
 
 // mixins
-@mixin flex-row {
+.flex-row {
   display: flex;
   flex-direction: row;
 }
 
-@mixin icon-default {
-  background-image: url("./assets/img/Sprites.svg");
-  background-repeat: no-repeat;
-  display: inline-block;
-}
-
-@mixin icon-bind($position, $size: $icon-size) {
-  background-position: $position;
-  height: $size;
-  width: $size;
-}
-
 .flex-row-align-center {
-  @include flex-row();
+  .flex-row();
   align-items: center;
+}
+
+.icon-bind(@position, @size: @icon-size) {
+  background-position: @position;
+  height: @size;
+  width: @size;
 }
 
 // style chung
@@ -103,106 +70,104 @@ body {
 }
 
 .icon {
-  @include icon-default();
+  background-image: url("./assets/img/Sprites.svg");
+  background-repeat: no-repeat;
+  display: inline-block;
 
   // icon navbar.
   &.icon-navbar-dashboard {
-    @include icon-bind(-30px -1628px);
+    .icon-bind(-30px -1628px);
   }
 
   &.icon-navbar-cash {
-    @include icon-bind(-73px -1628px);
+    .icon-bind(-73px -1628px);
   }
 
   &.icon-navbar-bank {
-    @include icon-bind(-117px -1628px);
+    .icon-bind(-117px -1628px);
   }
 
   &.icon-navbar-pu {
-    @include icon-bind(-161px -1628px);
+    .icon-bind(-161px -1628px);
   }
 
   // icon header.
   &.icon-three-stripes {
-    @include icon-bind(-843px -30px);
+    .icon-bind(-843px -30px);
     margin-left: 10px;
     cursor: pointer;
   }
 
   &.icon-chevron-down {
-    @include icon-bind(-80px -360px, 14px);
+    .icon-bind(-80px -360px, 14px);
     transform: rotate(90deg);
     margin-left: 10px;
   }
 
   &.icon-notify {
-    @include icon-bind(-788px -30px);
+    .icon-bind(-788px -30px);
     margin-right: 8px;
   }
 
   &.icon-refresh {
-    @include icon-bind(-423px -201px);
+    .icon-bind(-423px -201px);
 
     &:hover {
-      @include icon-bind(-1097px -88px);
+      .icon-bind(-1097px -88px);
     }
   }
 
   &.icon-search {
-    @include icon-bind(-992px -360px, 16px);
+    .icon-bind(-992px -360px, 16px);
   }
 
   &.icon-excel {
-    @include icon-bind(-704px -200px);
+    .icon-bind(-704px -200px);
 
     &:hover {
-      @include icon-bind(-704px -256px);
+      .icon-bind(-704px -256px);
     }
   }
 
   &.icon-chevron-down-blue {
-    @include icon-bind(-896px -359px, 16px);
+    .icon-bind(-896px -359px, 16px);
   }
 
   &.icon-close {
-    @include icon-bind(-144px -144px);
+    .icon-bind(-144px -144px);
   }
 
   &.icon-warning-48 {
-    @include icon-bind(-592px -456px, 48px);
+    .icon-bind(-592px -456px, 48px);
   }
 
   &.icon-error {
-    @include icon-bind(-746px -456px, 48px);
-  }
-
-  &.icon-arrow-dropdown {
-    @include icon-bind(-560px -359px, 16px);
+    .icon-bind(-746px -456px, 48px);
   }
 }
 
 // Navbar
 .navbar {
   height: 100vh;
-  width: $navbar-width;
+  width: @navbar-width;
   background-color: #393a3d;
 
   //   Logo box
   .logo-box {
-    @include flex-row();
+    .flex-row();
     padding: 24px;
-    height: $header-height;
+    height: @header-height;
     align-items: center;
 
     .toggle {
-      @include icon-default();
-      @include icon-bind(-424px -86px);
+      .icon();
+      .icon-bind(-424px -86px);
       margin-right: 10px;
       cursor: pointer;
     }
 
     .logo-branch {
-      @include flex-row();
+      .flex-row();
       align-items: center;
 
       .logo {
@@ -216,7 +181,7 @@ body {
 
       .title {
         font-weight: bold;
-        color: $color-white;
+        color: @color-white;
       }
     }
   }
@@ -224,7 +189,7 @@ body {
   //   Navbar content
   &-content {
     .navbar-item {
-      @include flex-row();
+      .flex-row();
       align-items: center;
       height: 42px;
       cursor: pointer;
@@ -239,7 +204,7 @@ body {
       }
 
       &-text {
-        color: $color-white;
+        color: @color-white;
       }
     }
   }
@@ -248,19 +213,19 @@ body {
 // Header
 .header {
   position: fixed;
-  left: $navbar-width;
+  left: @navbar-width;
   top: 0;
   right: 0;
-  height: $header-height;
-  @include flex-row();
+  height: @header-height;
+  .flex-row();
   justify-content: space-between;
   align-items: center;
 
   &-left {
-    @include flex-row();
+    .flex-row();
 
     .header-branch {
-      @include flex-row();
+      .flex-row();
       align-items: center;
       margin-left: 16px;
       cursor: pointer;
@@ -272,7 +237,7 @@ body {
   }
 
   &-right {
-    @include flex-row();
+    .flex-row();
     align-items: center;
     margin-right: 30px;
   }
@@ -281,26 +246,22 @@ body {
 // Content
 .content {
   position: fixed;
-  left: $navbar-width;
-  top: $header-height;
+  left: @navbar-width;
+  top: @header-height;
   right: 0;
   bottom: 0;
-  padding: 0 20px 0 16px;
   background-color: #f4f5f6;
-  overflow: scroll;
-  box-sizing: content-box;
+  display: flex;
+  padding: 0 30px 16px 30px;
+  flex-direction: column;
 
   // title box
   .title-box {
-    @include flex-row();
+    .flex-row();
     align-items: center;
     justify-content: space-between;
-    position: sticky;
-    top: 0;
-    left: 0;
     height: 64px;
-    z-index: 10;
-    background-color: #f4f5f6;
+    flex-shrink: 0;
 
     .title {
       font-size: 24px;
@@ -309,104 +270,80 @@ body {
   }
 
   .toolbar-box {
-    @include flex-row();
+    .flex-row();
     align-items: center;
     justify-content: flex-end;
-    background-color: $color-white;
-    padding-left: 16px;
-    padding-right: 16px;
+    background-color: @color-white;
+    padding: 16px;
     height: 64px;
-    position: sticky;
-    left: 0;
+    flex-shrink: 0;
   }
 
   .data {
-    padding-bottom: 16px;
-    background-color: $color-white;
-    // min-width: calc(100% + 30px);
-    // overflow-x: auto;
-
-    .table-option {
-      @include flex-row();
-      align-items: center;
-      justify-content: center;
-
-      .btn {
-        padding-left: 8px;
-        padding-right: 8px;
-        color: #0075c0;
-        font-weight: bold;
-      }
-    }
-  }
-
-  .divider {
-    height: 4px;
-    background-color: #f4f5f6;
-  }
-
-  .pagination {
-    @include flex-row();
-    height: 42px;
-    justify-content: space-between;
-    align-items: center;
-    background-color: $color-white;
-    // margin: 0 30px 0 16px;
+    background-color: @color-white;
     padding: 0 16px;
-    position: sticky;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    z-index: 3;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
 
-    .pagination-right {
-      @include flex-row();
+    .scroll {
+      flex: 1;
+      overflow: auto;
 
-      .pager {
-        @include flex-row();
+      .table-option {
+        .flex-row();
         align-items: center;
 
-        .page {
+        .btn {
           padding-left: 8px;
           padding-right: 8px;
-          text-decoration: none;
-          cursor: pointer;
-          color: #000;
+          color: #0075c0;
+          font-weight: bold;
+        }
+      }
+    }
 
-          &.active {
-            border: 1px solid #ccc;
-            padding-left: 4px;
-            padding-right: 4px;
-            font-weight: bold;
-          }
+    .divider {
+      height: 4px;
+      background-color: #f4f5f6;
+      margin-top: 16px;
+    }
 
-          &.disable {
-            cursor: not-allowed;
-            color: #ccc;
+    .pagination {
+      .flex-row();
+      height: 42px;
+      justify-content: space-between;
+      align-items: center;
+      background-color: @color-white;
+      bottom: 0;
+
+      .pagination-right {
+        .flex-row();
+
+        .pager {
+          .flex-row();
+
+          .page {
+            padding-left: 8px;
+            padding-right: 8px;
+            text-decoration: none;
+            cursor: pointer;
+            color: #000;
+
+            &.active {
+              border: 1px solid #ccc;
+              padding-left: 4px;
+              padding-right: 4px;
+              font-weight: bold;
+            }
+
+            &.disable {
+              cursor: not-allowed;
+            }
           }
         }
       }
     }
-  }
-
-  .hidden-left {
-    position: fixed;
-    left: $navbar-width;
-    top: $header-height;
-    width: 16px;
-    bottom: 0;
-    background-color: #f4f5f6;
-    z-index: 5;
-  }
-
-  .hidden-right {
-    position: fixed;
-    right: 10px;
-    top: $header-height;
-    width: 20px;
-    bottom: 0;
-    background-color: #f4f5f6;
-    z-index: 5;
   }
 
   .flex-center {
@@ -415,12 +352,6 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    z-index: 2000;
 
     .loader {
       background-image: url("./assets/loading.svg");
@@ -429,7 +360,6 @@ body {
       background-repeat: no-repeat;
       height: 32px;
       width: 32px;
-      transform: rotate(45 16 16);
     }
   }
 }
@@ -451,7 +381,7 @@ body {
 
   &.btn-primary {
     background-color: #2ca01c;
-    color: $color-white;
+    color: @color-white;
     font-weight: bold;
     border: 1px solid #ccc;
 
@@ -479,10 +409,6 @@ body {
   border-radius: 4px;
   width: 100%;
 
-  &::placeholder {
-    font-style: italic;
-  }
-
   &:focus {
     border-color: #2ca01c;
   }
@@ -499,13 +425,12 @@ body {
     }
 
     &:hover + .text-error {
-      white-space: nowrap;
       display: inline-block;
       position: absolute;
       top: 100%;
       left: 0;
       background-color: #38393d;
-      color: $color-white;
+      color: @color-white;
       padding: 8px;
       z-index: 10;
     }
@@ -563,8 +488,8 @@ body {
     }
 
     &::after {
-      @include icon-default();
-      @include icon-bind(-1224px -360px, 16px);
+      .icon();
+      .icon-bind(-1224px -360px, 16px);
       content: "";
       font-size: 14px;
       position: absolute;
@@ -618,11 +543,9 @@ body {
 
 // table
 .table {
-  background-color: $color-white;
-  min-width: 100%;
-  white-space: nowrap;
-  outline: none;
-  border-spacing: 0;
+  width: 100%;
+  border-collapse: collapse;
+  // background-color: @color-white;
 
   th,
   td {
@@ -635,7 +558,7 @@ body {
     tr {
       height: 32px;
       th {
-        background-color: #eceef1;
+        background-color: #f4f5f6;
       }
     }
   }
@@ -644,22 +567,6 @@ body {
     tr {
       height: 48px;
     }
-  }
-
-  .view-white {
-    background-color: $color-white;
-    border: none !important;
-    width: 16px !important;
-    min-width: 16px !important;
-    max-width: 16px !important;
-    padding: 0;
-  }
-
-  .pin {
-    position: sticky;
-    background-color: $color-white;
-    border: 1px solid #ccc;
-    z-index: 2;
   }
 }
 
@@ -681,8 +588,8 @@ body {
   }
 
   .dialog-content {
-    z-index: 100;
-    background-color: $color-white;
+    z-index: 1000;
+    background-color: @color-white;
     margin: 20px auto;
     width: 900px;
     position: relative;
@@ -704,7 +611,7 @@ body {
     }
 
     .dialog-header {
-      @include flex-row();
+      .flex-row();
       align-items: center;
       height: 52px;
       padding-left: 32px;
@@ -716,7 +623,7 @@ body {
       }
 
       .option {
-        @include flex-row();
+        .flex-row();
         align-items: center;
         padding-left: 16px;
         padding-right: 16px;
@@ -730,7 +637,7 @@ body {
     }
 
     .dialog-footer {
-      @include flex-row();
+      .flex-row();
       justify-content: space-between;
       align-items: center;
       height: 72px;
@@ -754,16 +661,10 @@ body {
 
   .dropdown-content {
     position: absolute;
-    background-color: $color-white;
+    background-color: @color-white;
     border: 1px solid #ccc;
     white-space: nowrap;
     z-index: 20;
-    min-width: 100%☺;
-
-    &.reserve {
-      top: auto;
-      bottom: 100%;
-    }
 
     &.hide {
       display: none;
@@ -784,74 +685,6 @@ body {
         color: #2ca01c;
         cursor: pointer;
       }
-    }
-  }
-}
-
-// autocomplete
-.autocomplete {
-  .icon-dropdown-box {
-    cursor: pointer;
-    height: 30px;
-    width: 30px;
-    top: 1px;
-    right: 1px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    &:hover {
-      background-color: #f4f5f6;
-      border-left: none;
-      border-radius: 4px;
-    }
-  }
-
-  .active {
-    background-color: #2ca01c;
-    color: $color-white;
-  }
-}
-
-// tooltip
-.tooltip {
-  position: relative;
-
-  &-text {
-    display: none;
-    white-space: nowrap;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background-color: #38393d;
-    color: $color-white;
-    padding: 8px;
-    z-index: 10;
-  }
-
-  &:hover &-text {
-    display: inline-block;
-  }
-}
-
-// other
-.table-option-dropdown {
-  position: fixed;
-  background-color: $color-white;
-  z-index: 100;
-  white-space: nowrap;
-  border: 1px solid #ccc;
-
-  .dropdown-item {
-    height: 32px;
-    line-height: 32px;
-    padding-left: 12px;
-    padding-right: 12px;
-
-    &:hover {
-      background-color: #f4f5f6;
-      color: #2ca01c;
-      cursor: pointer;
     }
   }
 }
@@ -907,7 +740,6 @@ body {
 }
 
 .row {
-  @include flex-row();
+  .flex-row();
   flex-wrap: wrap;
 }
-</style>
