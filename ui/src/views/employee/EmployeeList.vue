@@ -82,7 +82,7 @@
               <th class="view-white pin" style="right: 0"></th>
             </tr>
           </thead>
-          <tbody>
+          <tbody v-if="employees && employees.length > 0">
             <EmployeeItem
               v-for="e in employees"
               :key="e.employeeId"
@@ -92,6 +92,18 @@
             />
           </tbody>
         </table>
+
+        <div
+          v-if="!employees || employees.length < 1"
+          style="display: flex; flex-direction: column; justify-content: center"
+        >
+          <img
+            src="../../assets/bg_report_nodata.svg"
+            alt="Không có dữ liệu"
+            style="margin: 20px auto"
+          />
+          <div style="text-align: center">Không có dữ liệu</div>
+        </div>
       </div>
 
       <div class="divider"></div>
@@ -109,22 +121,26 @@
     </div>
 
     <EmployeeDialog
-      :isShow="employeeDialogConfig.isShow"
+      v-if="employeeDialogConfig.isShow"
       :employee.sync="employeeDialogConfig.employee"
       @onClose="
         (employeeDialogConfig.isShow = false),
           (employeeDialogConfig.employee = null)
       "
+      @onSave="onSaveEmployee"
+      @onSaveAndAdd="onSaveAndAddEmployee"
     />
 
     <EmployeeTableOption
+      v-if="employeeTableOptionConfig.isShow"
       v-bind="{ ...employeeTableOptionConfig }"
       @onClose="closeEmployeeTableOption"
       @onClickBtnDel="onClickBtnDel"
     />
 
     <ConfirmDialog
-      v-bind="{ ...confirmDialogConfig }"
+      v-if="confirmDialogConfig.isShow"
+      :msg="confirmDialogConfig.msg"
       @onClose="
         (employeeDel = null),
           (confirmDialogConfig.isShow = false),

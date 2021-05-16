@@ -1,5 +1,5 @@
 <template>
-  <div class="dialog" :class="{ hide: !isShow }">
+  <div class="dialog">
     <div class="dialog-background" @click="closeDialog"></div>
     <div class="dialog-content" style="width: 444px">
       <div class="dialog-body">
@@ -37,15 +37,6 @@ export default {
 
   //#region props
   props: {
-    /**
-     * Prop xác định trạng thái dialog.
-     * CreatedBy: dbhuan (09/05/2021)
-     */
-    isShow: {
-      type: Boolean,
-      default: false,
-    },
-
     /**
      * Lời nhắn
      * CreatedBy: dbhuan 16/05/2021

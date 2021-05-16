@@ -1,5 +1,5 @@
 <template>
-  <div class="dialog" :class="{ hide: !isShow }">
+  <div class="dialog">
     <div
       class="dialog-background"
       style="background-color: transparent"
@@ -23,14 +23,6 @@
 export default {
   //#region props
   props: {
-    /**
-     * Prop xác định trạng thái dialog.
-     * CreatedBy: dbhuan (09/05/2021)
-     */
-    isShow: {
-      type: Boolean,
-      default: false,
-    },
 
     /**
      * Vị trí của component so với top

@@ -1,5 +1,7 @@
 <template>
-  <div class="pagination">
+  <div
+    class="pagination"
+  >
     <div>
       Tổng số: <b>{{ totalRecord }}</b> bản ghi
     </div>
@@ -15,7 +17,7 @@
         ]"
         @update:value="$emit('update:pageSize', $event)"
       /> -->
-      <div class="pager" v-if="totalPages > 1">
+      <div class="pager" v-if="totalPages > 1 && page >= 1 && page <= totalPages">
         <div
           class="page"
           :class="{ disable: page == 1 }"
