@@ -72,6 +72,7 @@ export const delEmployee = (employeeId) =>
         .catch(err => Promise.reject(err));
 //#endregion
 
+//#region saveEmployee
 /**
  * Lưu thông tin nhân viên
  * @returns 
@@ -87,3 +88,4 @@ export const saveEmployee = (data, isInsert = true) =>
             return Promise.reject();
         })
         .catch(err => Promise.reject(err));
+//#endregion

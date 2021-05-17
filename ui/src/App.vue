@@ -753,6 +753,7 @@ body {
   }
 
   .dropdown-content {
+    min-width: 100%;
     position: absolute;
     background-color: $color-white;
     border: 1px solid #ccc;

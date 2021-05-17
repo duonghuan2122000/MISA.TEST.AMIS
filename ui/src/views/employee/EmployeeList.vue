@@ -499,6 +499,7 @@ export default {
     },
 
     onChangePageSize(pageSize) {
+      this.page = 1;
       this.pageSize = pageSize;
       this.getEmployees();
     },

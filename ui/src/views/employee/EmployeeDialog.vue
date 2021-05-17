@@ -165,7 +165,11 @@
                 <label class="label-input"
                   >Đơn vị <span style="color: #f20">*</span></label
                 >
-                <select
+                <Autocomplete
+                  :value="employee && employee.employeeDepartmentId"
+                  :suggestions="departments"
+                />
+                <!-- <select
                   class="input"
                   :class="{
                     'has-error': errors && errors.employeeDepartmentId,
@@ -186,7 +190,7 @@
                   >
                     {{ ed.employeeDepartmentName }}
                   </option>
-                </select>
+                </select> -->
                 <span
                   v-if="errors && errors.employeeDepartmentId"
                   class="text-error"
@@ -400,11 +404,14 @@
 //#region import
 import dayjs from "dayjs";
 
+import { getEmployeeDepartments } from "../../api/employeeDepartment.js";
+
 import validation from "../../helpers/validation.js";
 
 import Button from "../../components/common/Button.vue";
 import Input from "../../components/common/Input.vue";
 import Radio from "../../components/common/Radio.vue";
+import Autocomplete from "../../components/common/Autocomplete.vue";
 //#endregion
 
 //#region export
@@ -414,6 +421,7 @@ export default {
     Button,
     Input,
     Radio,
+    Autocomplete,
   },
   //#endregion
 
@@ -454,6 +462,7 @@ export default {
     isShowAlertDialog: false,
     typeAlertDialog: "warning",
     msgAlertDialog: "",
+    departments: [],
   }),
   //#endregion
 
@@ -547,6 +556,12 @@ export default {
 
   //#region lifecycle
   mounted() {
+    getEmployeeDepartments().then((data) => {
+      this.departments = data.map((d) => ({
+        value: d.employeeDepartmentId,
+        text: d.employeeDepartmentName,
+      }));
+    });
     this.$refs.employeeCode.$el.focus();
     document.addEventListener("keydown", this.onKeyDownListener);
   },
