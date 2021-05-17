@@ -11,13 +11,15 @@ namespace MISA.Core.Exceptions
     /// CreatedBy: dbhuan (09/05/2021)
     public class ClientException: Exception
     {
+        public IDictionary? DataErr { get; set; }
+
         /// <summary>
         /// Hàm khởi tạo
         /// </summary>
         /// <param name="msg">Thông báo lỗi</param>
-        public ClientException(string msg): base(msg)
+        public ClientException(string msg, IDictionary? data): base(msg)
         {
-
+            DataErr = data;
         }
     }
 }

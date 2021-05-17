@@ -71,3 +71,19 @@ export const delEmployee = (employeeId) =>
         })
         .catch(err => Promise.reject(err));
 //#endregion
+
+/**
+ * Lưu thông tin nhân viên
+ * @returns 
+ */
+export const saveEmployee = (data, isInsert = true) =>
+    req({
+        url: `${PREFIX_URL}`,
+        data: data,
+        method: isInsert ? 'POST' : 'PUT'
+    })
+        .then(res => {
+            if (res.status == 200 || res.status == 201) return Promise.resolve();
+            return Promise.reject();
+        })
+        .catch(err => Promise.reject(err));

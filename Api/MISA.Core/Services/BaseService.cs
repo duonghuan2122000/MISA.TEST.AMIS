@@ -125,7 +125,7 @@ namespace MISA.Core.Services
 
                             msgError = string.Format(msgErrorRequiredDefault, name);
                         }
-                        throw new ClientException(msgError);
+                        throw new ClientException(msgError, null);
                     }
                 }
             }

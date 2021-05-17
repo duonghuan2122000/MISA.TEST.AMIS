@@ -114,6 +114,7 @@
         :totalPages="totalPages"
         :totalRecord="totalRecord"
         @onChangePage="onChangePage"
+        @update:pageSize="onChangePageSize"
       />
 
       <div class="hidden-left"></div>
@@ -123,10 +124,8 @@
     <EmployeeDialog
       v-if="employeeDialogConfig.isShow"
       :employee.sync="employeeDialogConfig.employee"
-      @onClose="
-        (employeeDialogConfig.isShow = false),
-          (employeeDialogConfig.employee = null)
-      "
+      :errors.sync="employeeDialogConfig.errors"
+      @onClose="closeEmployeeDialog"
       @onSave="onSaveEmployee"
       @onSaveAndAdd="onSaveAndAddEmployee"
     />
@@ -136,17 +135,27 @@
       v-bind="{ ...employeeTableOptionConfig }"
       @onClose="closeEmployeeTableOption"
       @onClickBtnDel="onClickBtnDel"
+      @onClickDuplicate="onClickDuplicate"
     />
 
     <ConfirmDialog
       v-if="confirmDialogConfig.isShow"
       :msg="confirmDialogConfig.msg"
       @onClose="
-        (employeeDel = null),
+        (employeeModify = null),
           (confirmDialogConfig.isShow = false),
           (confirmDialogConfig.msg = '')
       "
       @onPositive="delEmployee"
+    />
+
+    <AlertDialog
+      v-if="alertDialogConfig.isShow"
+      :msg="alertDialogConfig.msg"
+      :type="alertDialogConfig.type"
+      @onClose="
+        (alertDialogConfig.isShow = false), (alertDialogConfig.msg = '')
+      "
     />
   </div>
 </template>
@@ -159,6 +168,7 @@ import {
   getEmployee,
   exportExcel,
   delEmployee,
+  saveEmployee,
 } from "../../api/employee.js";
 
 import { StateEnum } from "../../enums/enum.js";
@@ -169,10 +179,12 @@ import Input from "../../components/common/Input.vue";
 import Checkbox from "../../components/common/Checkbox.vue";
 import ConfirmDialog from "../../components/common/ConfirmDialog.vue";
 import Pagination from "../../components/common/Pagination.vue";
+import AlertDialog from "../../components/common/AlertDialog.vue";
 
 import EmployeeItem from "./EmployeeItem.vue";
 import EmployeeDialog from "./EmployeeDialog.vue";
 import EmployeeTableOption from "./EmployeeTableOption.vue";
+
 //#endregion
 
 //#region export
@@ -185,6 +197,7 @@ export default {
     Checkbox,
     ConfirmDialog,
     Pagination,
+    AlertDialog,
 
     EmployeeItem,
     EmployeeDialog,
@@ -248,10 +261,10 @@ export default {
       },
 
       /**
-       * Thông tin nhân viên đang được chọn để xóa
+       * Thông tin nhân viên đang được chọn để thao tác
        * CreatedBy: dbhuan 15/05/2021
        */
-      employeeDel: null,
+      employeeModify: null,
 
       /**
        * Config của dialog nhân viên
@@ -260,6 +273,8 @@ export default {
       employeeDialogConfig: {
         isShow: false,
         employee: null,
+        isInsert: true,
+        errors: null,
       },
 
       /**
@@ -269,6 +284,12 @@ export default {
       confirmDialogConfig: {
         isShow: false,
         msg: "",
+      },
+
+      alertDialogConfig: {
+        isShow: false,
+        msg: "",
+        type: "warning",
       },
 
       timeOut: null,
@@ -338,7 +359,7 @@ export default {
         newTop -= 132;
       }
 
-      this.employeeDel = employee;
+      this.employeeModify = employee;
       this.employeeTableOptionConfig = {
         isShow: true,
         top: newTop,
@@ -351,7 +372,7 @@ export default {
      * CreatedBy: dbhuan 16/05/2021
      */
     closeEmployeeTableOption() {
-      this.employeeDel = null;
+      this.employeeModify = null;
       this.employeeTableOptionConfig = {
         isShow: false,
         top: 0,
@@ -370,6 +391,8 @@ export default {
           employee: {
             employeeCode: data,
           },
+          isInsert: true,
+          errors: null,
         };
       });
     },
@@ -383,6 +406,8 @@ export default {
         this.employeeDialogConfig = {
           isShow: true,
           employee: data,
+          isInsert: false,
+          errors: null,
         };
       });
     },
@@ -397,11 +422,35 @@ export default {
         top: 0,
         left: 0,
       };
-      if (this.employeeDel) {
+      if (this.employeeModify) {
         this.confirmDialogConfig = {
           isShow: true,
-          msg: `Bạn có chắc chắn muốn xóa nhân viên <${this.employeeDel.employeeCode}> không?`,
+          msg: `Bạn có chắc chắn muốn xóa nhân viên <${this.employeeModify.employeeCode}> không?`,
         };
+      }
+    },
+
+    onClickDuplicate() {
+      this.employeeTableOptionConfig = {
+        isShow: false,
+        top: 0,
+        left: 0,
+      };
+      if (this.employeeModify) {
+        getEmployee(this.employeeModify.employeeId)
+          .then((employee) => {
+            this.employeeDialogConfig.isInsert = true;
+            this.employeeDialogConfig.errors = null;
+            this.employeeDialogConfig.employee = employee;
+            return getNewEmployeeCode();
+          })
+          .then((employeeCode) => {
+            this.employeeDialogConfig.employee = {
+              ...this.employeeDialogConfig.employee,
+              employeeCode,
+            };
+            this.employeeDialogConfig.isShow = true;
+          });
       }
     },
 
@@ -413,6 +462,7 @@ export default {
       this.employeeFilter = val;
       clearTimeout(this.timeOut);
       this.timeOut = setTimeout(() => {
+        this.page = 1;
         this.getEmployees();
       }, 1000);
     },
@@ -448,6 +498,11 @@ export default {
       this.getEmployees();
     },
 
+    onChangePageSize(pageSize) {
+      this.pageSize = pageSize;
+      this.getEmployees();
+    },
+
     /**
      * Xóa nhân viên
      * CreatedBy: dbhuan 16/05/2021
@@ -457,12 +512,71 @@ export default {
         isShow: false,
         msg: "",
       };
-      if (this.employeeDel) {
-        delEmployee(this.employeeDel.employeeId).then(() => {
+      if (this.employeeModify) {
+        delEmployee(this.employeeModify.employeeId).then(() => {
           this.page = 1;
           this.getEmployees();
         });
       }
+    },
+
+    saveEmployee() {
+      if (this.employeeDialogConfig.errors) {
+        for (let err in this.errors) {
+          if (this.employeeDialogConfig.errors[err]) {
+            this.alertDialogConfig = {
+              isShow: true,
+              type: "error",
+              msg: this.employeeDialogConfig.errors[err],
+            };
+            return Promise.reject();
+          }
+        }
+      }
+      return saveEmployee(
+        this.employeeDialogConfig.employee,
+        this.employeeDialogConfig.isInsert
+      )
+        .then(() => {
+          this.getEmployees();
+          return Promise.resolve();
+        })
+        .catch((err) => {
+          if (err.response.data.Data && err.response.data.Data.EmployeeCode) {
+            var error = err.response.data.devMsg;
+            this.employeeDialogConfig.errors = {
+              employeeCode: error,
+            };
+            this.alertDialogConfig = {
+              isShow: true,
+              type: "warning",
+              msg: error,
+            };
+            return Promise.reject();
+          }
+        });
+    },
+
+    onSaveEmployee() {
+      this.saveEmployee().then(() => {
+        this.closeEmployeeDialog();
+      });
+    },
+
+    onSaveAndAddEmployee() {
+      this.saveEmployee().then(() => {
+        console.log("click");
+        this.onClickBtnAddEmployee();
+      });
+    },
+
+    closeEmployeeDialog() {
+      this.employeeDialogConfig = {
+        isShow: false,
+        employee: null,
+        errors: null,
+        isInsert: true,
+      };
     },
   },
   //#endregion

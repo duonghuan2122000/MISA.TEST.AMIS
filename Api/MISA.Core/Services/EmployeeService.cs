@@ -6,6 +6,7 @@ using MISA.Core.Validations;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -45,7 +46,7 @@ namespace MISA.Core.Services
         {
             if(employeeFilter.Page <= 0 || employeeFilter.PageSize <= 0)
             {
-                throw new ClientException("Tham số truyền vào không hợp lệ");
+                throw new ClientException("Tham số truyền vào không hợp lệ", null);
             }
             return _employeeRepository.GetEmployees(employeeFilter);
         }
@@ -163,7 +164,11 @@ namespace MISA.Core.Services
 
             if(isExists == true)
             {
-                throw new ClientException(Properties.ValidationResource.MsgErrorEmployeeCodeExists);
+                IDictionary dictionary = new Dictionary<string, string>
+                {
+                    { "EmployeeCode", "Error" }
+                };
+                throw new ClientException(string.Format(Properties.ValidationResource.MsgErrorEmployeeCodeExists, employee.EmployeeCode), dictionary);
             }
         }
 

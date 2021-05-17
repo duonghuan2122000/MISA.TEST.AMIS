@@ -53,17 +53,20 @@ namespace MISA.AMIS.Api.Middleware
         /// <returns></returns>
         private Task ErrorHandle(HttpContext context, Exception ex)
         {
+            var data = ex.Data;
             int statusCode = 500;
             if(ex is ClientException)
             {
+                var clientEx = ex as ClientException;
                 statusCode = 400;
+                data = clientEx.DataErr;
             }
 
             var res = new
             {
                 devMsg = ex.Message,
                 userMsg = "Có lỗi xảy ra",
-                Data = ex.Data
+                Data = data
             };
 
             var result = JsonSerializer.Serialize(res);

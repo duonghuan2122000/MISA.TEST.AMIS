@@ -385,6 +385,7 @@
                 color="primary"
                 text="Cất và thêm"
                 style="margin-left: 8px"
+                @click="onClickSaveAndAdd"
               />
               <div class="tooltip-text">Cất và thêm (Ctrl + Shift + S)</div>
             </div>
@@ -392,13 +393,6 @@
         </div>
       </div>
     </div>
-
-    <AlertDialog
-      v-if="isShowAlertDialog"
-      :msg="msgAlertDialog"
-      :type="typeAlertDialog"
-      @onClose="isShowAlertDialog = false"
-    />
   </div>
 </template>
 
@@ -411,7 +405,6 @@ import validation from "../../helpers/validation.js";
 import Button from "../../components/common/Button.vue";
 import Input from "../../components/common/Input.vue";
 import Radio from "../../components/common/Radio.vue";
-import AlertDialog from "../../components/common/AlertDialog.vue";
 //#endregion
 
 //#region export
@@ -421,7 +414,6 @@ export default {
     Button,
     Input,
     Radio,
-    AlertDialog,
   },
   //#endregion
 
@@ -444,12 +436,16 @@ export default {
       type: Array,
       default: null,
     },
+
+    errors: {
+      type: Object,
+      default: null,
+    },
   },
   //#endregion
 
   //#region data
   data: () => ({
-    errors: null,
     displayNames: {
       employeeCode: "Mã nhân viên",
       employeeName: "Tên nhân viên",
@@ -485,7 +481,6 @@ export default {
      * CreatedBy: dbhuan (10/05/2021)
      */
     closeDialog() {
-      this.errors = null;
       this.$emit("onClose");
     },
 
@@ -498,65 +493,14 @@ export default {
     },
 
     /**
-     * valid mã nhân viên
-     */
-    validEmployeeCode() {
-      if (!this.employee || !this.employee.employeeCode) {
-        this.errors = {
-          ...this.errors,
-          employeeCode: "Mã nhân viên không được để trống.",
-        };
-      } else {
-        this.errors = {
-          ...this.errors,
-          employeeCode: null,
-        };
-      }
-    },
-
-    /**
-     * valid tên nhân viên
-     */
-    validEmployeeName() {
-      if (!this.employee || !this.employee.employeeName) {
-        this.errors = {
-          ...this.errors,
-          employeeName: "Tên nhân viên không được để trống.",
-        };
-      } else {
-        this.errors = {
-          ...this.errors,
-          employeeName: null,
-        };
-      }
-    },
-
-    /**
-     * valid đơn vị nhân viên
-     */
-    validEmployeeDepartmentId() {
-      if (!this.employee || !this.employee.employeeDepartmentId) {
-        this.errors = {
-          ...this.errors,
-          employeeDepartmentId: "Đơn vị nhân viên không được để trống.",
-        };
-      } else {
-        this.errors = {
-          ...this.errors,
-          employeeDepartmentId: null,
-        };
-      }
-    },
-
-    /**
      * Valid dữ liệu
      * CreatedBy: dbhuan 16/05/2021
      */
     validate(rules) {
-      this.errors = {
+      this.$emit("update:errors", {
         ...this.errors,
         ...validation.validate(rules, this.employee, this.displayNames),
-      };
+      });
     },
 
     validateBeforeSave() {
@@ -582,7 +526,6 @@ export default {
      * CreatedBy: dbhuan 16/05/2021
      */
     onKeyDownListener(e) {
-      console.log(e);
       if (e.keyCode == 27) {
         // ESC
         this.closeDialog();

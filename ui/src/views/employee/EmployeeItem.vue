@@ -7,7 +7,7 @@
     <td>{{ employee.employeeCode }}</td>
     <td>{{ employee.employeeName }}</td>
     <td>{{ employee.genderName }}</td>
-    <td style="text-align: center">02/12/2000</td>
+    <td style="text-align: center">{{ dateOfBirth(employee.dateOfBirth) }}</td>
     <td>{{ employee.identityNumber }}</td>
     <td>{{ employee.employeePosition }}</td>
     <td>{{ employee.employeeDepartmentName }}</td>
@@ -36,6 +36,7 @@
 import Button from "../../components/common/Button.vue";
 import IconButton from "../../components/common/IconButton.vue";
 import Checkbox from "../../components/common/Checkbox.vue";
+import dayjs from "dayjs";
 //#endregion
 
 //#region export
@@ -75,6 +76,10 @@ export default {
      */
     onClickBtnEdit(employeeId) {
       this.$emit("onClickBtnEdit", employeeId);
+    },
+
+    dateOfBirth(dateStr) {
+      return dateStr ? dayjs(dateStr).format("DD/MM/YYYY") : null;
     },
   },
   //#endregion

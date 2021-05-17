@@ -6,7 +6,7 @@
       Tổng số: <b>{{ totalRecord }}</b> bản ghi
     </div>
     <div class="pagination-right">
-      <!-- <PageSizeAutocomplete
+      <PageSizeAutocomplete
         :value="pageSize"
         :suggestions="[
           { value: 10, text: '10 bản ghi trên trang' },
@@ -16,7 +16,7 @@
           { value: 100, text: '100 bản ghi trên trang' },
         ]"
         @update:value="$emit('update:pageSize', $event)"
-      /> -->
+      />
       <div class="pager" v-if="totalPages > 1 && page >= 1 && page <= totalPages">
         <div
           class="page"
@@ -69,13 +69,13 @@
 </template>
 
 <script>
-// import PageSizeAutocomplete from "./PageSizeAutcomplete.vue";
+import PageSizeAutocomplete from "./PageSizeAutocomplete.vue";
 
 //#region export
 export default {
   //#region components
   components: {
-    // PageSizeAutocomplete,
+    PageSizeAutocomplete,
   },
   //#endregion
 
