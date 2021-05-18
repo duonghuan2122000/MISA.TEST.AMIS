@@ -191,26 +191,18 @@ export default {
   watch: {
     suggestions: function () {
       this.suggestionData = this.suggestions;
-      if (
-        this.suggestionData[this.current] &&
-        this.suggestionData[this.current].text
-      ) {
+      let index = this.suggestionData.findIndex((s) => s.value == this.value);
+      if (index >= 0) {
+        this.current = index;
         this.valueInput = this.suggestionData[this.current].text;
       } else {
+        this.current = 0;
         this.valueInput = "";
       }
     },
   },
 
   mounted() {
-    if (this.suggestionData) {
-      let index = this.suggestionData.findIndex((s) => s.value == this.value);
-      if (index >= 0) {
-        this.current = index;
-      } else {
-        this.current = 0;
-      }
-    }
     document.addEventListener("click", this.close);
   },
 

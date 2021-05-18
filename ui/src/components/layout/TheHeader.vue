@@ -1,7 +1,10 @@
 <template>
   <div class="header">
     <div class="header-left">
-      <div class="icon icon-three-stripes"></div>
+      <div
+        class="icon icon-three-stripes"
+        @click.prevent="$emit('onNavbarToggle')"
+      ></div>
 
       <div class="header-branch">
         <div class="title">CÔNG TY MISA</div>

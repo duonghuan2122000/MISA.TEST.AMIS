@@ -41,8 +41,7 @@
                         $emit('update:employee', {
                           ...employee,
                           employeeCode: $event,
-                        });
-                        $emit('update:isChanged', true);
+                        })
                       "
                       @blur="validate({ employeeCode: 'required' })"
                     />
@@ -65,8 +64,7 @@
                         $emit('update:employee', {
                           ...employee,
                           employeeName: $event,
-                        });
-                        $emit('update:isChanged', true);
+                        })
                       "
                       @blur="validate({ employeeName: 'required' })"
                     />
@@ -450,30 +448,12 @@ export default {
     },
 
     /**
-     * Prop danh sách đơn vị nhân viên.
-     * CreatedBy: dbhuan (11/05/2021)
-     */
-    employeeDepartments: {
-      type: Array,
-      default: null,
-    },
-
-    /**
      * Lỗi valid
      * CreatedBy: dbhuan 18/05/2021
      */
     errors: {
       type: Object,
       default: null,
-    },
-
-    /**
-     * Biến xác định có thay đổi thông tin nhân viên hay không.
-     * CreatedBy: dbhuan 18/05/2021
-     */
-    isChanged: {
-      type: Boolean,
-      default: false,
     },
   },
   //#endregion
@@ -569,10 +549,16 @@ export default {
     },
 
     validateBeforeSave() {
-      this.validate({
-        employeeCode: "required",
-        employeeName: "required",
-        employeeDepartmentId: "required",
+      this.$emit("update:errors", {
+        ...validation.validate(
+          {
+            employeeCode: "required",
+            employeeName: "required",
+            employeeDepartmentId: "required",
+          },
+          this.employee,
+          this.displayNames
+        ),
       });
     },
 

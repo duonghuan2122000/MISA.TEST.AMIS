@@ -1,7 +1,7 @@
 <template>
   <div>
-    <TheNavbar />
-    <TheHeader />
+    <TheNavbar :isNavbarToggle.sync="isNavbarToggle" />
+    <TheHeader @onNavbarToggle="isNavbarToggle = true" />
     <TheContent />
   </div>
 </template>
@@ -21,6 +21,12 @@ export default {
     TheContent,
   },
   //#endregion
+
+  data() {
+    return {
+      isNavbarToggle: false,
+    };
+  },
 };
 //#endregion
 </script>
@@ -34,6 +40,7 @@ export default {
 
 // Biến chung.
 $navbar-width: 178px;
+$navbar-width-toggle: 52px;
 
 $header-height: 48px;
 
@@ -104,6 +111,10 @@ body {
 
 .icon {
   @include icon-default();
+
+  &.icon-navbar-three-stripes {
+    @include icon-bind(-312px -32px);
+  }
 
   // icon navbar.
   &.icon-navbar-dashboard {
@@ -195,9 +206,33 @@ body {
   width: $navbar-width;
   background-color: #393a3d;
 
-  // &.toggle {
+  &.toggle {
+    width: $navbar-width-toggle;
 
-  // }
+    .logo-box-toggle {
+      height: $header-height;
+      @include flex-row();
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .navbar-item-text {
+      display: none;
+    }
+
+    & ~ div {
+      left: $navbar-width-toggle;
+
+      .icon-three-stripes {
+        display: none;
+      }
+
+      .hidden-left {
+        left: $navbar-width-toggle;
+      }
+    }
+  }
 
   //   Logo box
   .logo-box {
@@ -335,8 +370,7 @@ body {
   .data {
     padding-bottom: 16px;
     background-color: $color-white;
-    // min-width: calc(100% + 30px);
-    // overflow-x: auto;
+    position: relative;
 
     .table-option {
       @include flex-row();
@@ -422,17 +456,11 @@ body {
   }
 
   .flex-center {
-    height: 100%;
-    width: 100%;
+    height: 100px;
     display: flex;
     align-items: center;
     justify-content: center;
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    z-index: 2000;
+    z-index: 1;
 
     .loader {
       background-image: url("./assets/loading.svg");
@@ -691,6 +719,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 20;
   .dialog-background {
     position: absolute;
     height: 100%;

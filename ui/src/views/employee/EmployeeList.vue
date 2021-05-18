@@ -1,132 +1,125 @@
 <template>
-  <div>
-    <div class="content">
-      <div class="title-box">
-        <div class="title">Nhân viên</div>
-        <div class="toolbar">
-          <Button
-            color="primary"
-            text="Thêm mới nhân viên"
-            @click="onClickBtnAddEmployee"
-          />
-        </div>
-      </div>
-
-      <div class="toolbar-box">
-        <div class="con-input">
-          <Input
-            placeholder="Tìm theo mã, tên hoặc số điện thoại"
-            :hasIcon="true"
-            :value="employeeFilter"
-            @input="onInputFilterEmployee"
-          />
-          <div class="icon-input icon icon-search"></div>
-        </div>
-        <IconButton
-          icon="icon icon-refresh"
-          style="margin-left: 8px; padding: 0"
-          @click="onClickBtnRefresh"
-        />
-        <IconButton
-          icon="icon icon-excel"
-          style="margin-left: 8px; padding: 0"
-          @click="onClickBtnExport"
+  <div class="content">
+    <div class="title-box">
+      <div class="title">Nhân viên</div>
+      <div class="toolbar">
+        <Button
+          color="primary"
+          text="Thêm mới nhân viên"
+          @click="onClickBtnAddEmployee"
         />
       </div>
-
-      <div class="data" style="position: relative">
-        <div class="flex-center" v-if="isLoading">
-          <div class="loader"></div>
-        </div>
-
-        <div class="flex-center" v-if="isError">
-          <div class="icon icon-error"></div>
-          <div>Có lỗi xảy ra.</div>
-        </div>
-
-        <table class="table" v-show="!isError">
-          <thead>
-            <tr style="position: sticky; top: 112px">
-              <th class="view-white pin" style="left: 0"></th>
-              <th class="pin" style="left: 16px; background-color: #eceef1">
-                <Checkbox />
-              </th>
-              <th style="min-width: 150px; text-align: center">MÃ NHÂN VIÊN</th>
-              <th style="min-width: 250px; text-align: center">
-                TÊN NHÂN VIÊN
-              </th>
-              <th style="min-width: 150px; text-align: center">GIỚI TÍNH</th>
-              <th style="min-width: 150px; text-align: center">NGÀY SINH</th>
-              <th style="min-width: 150px; text-align: center">SỐ CMND</th>
-              <th style="min-width: 150px; text-align: center">CHỨC DANH</th>
-              <th style="min-width: 150px; text-align: center">TÊN ĐƠN VỊ</th>
-              <th style="min-width: 150px; text-align: center">SỐ TÀI KHOẢN</th>
-              <th style="min-width: 150px; text-align: center">
-                TÊN NGÂN HÀNG
-              </th>
-              <th style="min-width: 300px; text-align: center">
-                CHI NHÁNH TK NGÂN HÀNG
-              </th>
-              <th
-                style="
-                  min-width: 150px;
-                  text-align: center;
-                  right: 16px;
-                  background-color: #eceef1;
-                  border-left: 1px solid #ccc;
-                  border-right: none;
-                "
-                class="pin"
-              >
-                CHỨC NĂNG
-              </th>
-              <th class="view-white pin" style="right: 0"></th>
-            </tr>
-          </thead>
-          <tbody v-if="employees && employees.length > 0">
-            <EmployeeItem
-              v-for="e in employees"
-              :key="e.employeeId"
-              :employee="e"
-              @toggleTableOption="toggleTableOption"
-              @onClickBtnEdit="onClickBtnEdit"
-            />
-          </tbody>
-        </table>
-
-        <div
-          v-if="!isLoading && !isError && (!employees || employees.length < 1)"
-          style="display: flex; flex-direction: column; justify-content: center"
-        >
-          <img
-            src="../../assets/bg_report_nodata.svg"
-            alt="Không có dữ liệu"
-            style="margin: 20px auto"
-          />
-          <div style="text-align: center">Không có dữ liệu</div>
-        </div>
-      </div>
-
-      <div class="divider"></div>
-
-      <Pagination
-        :page="page"
-        :pageSize="pageSize"
-        :totalPages="totalPages"
-        :totalRecord="totalRecord"
-        @onChangePage="onChangePage"
-        @update:pageSize="onChangePageSize"
-      />
-
-      <div class="hidden-left"></div>
-      <div class="hidden-right"></div>
     </div>
+
+    <div class="toolbar-box">
+      <div class="con-input">
+        <Input
+          placeholder="Tìm theo mã, tên hoặc số điện thoại"
+          :hasIcon="true"
+          :value="employeeFilter"
+          @input="onInputFilterEmployee"
+        />
+        <div class="icon-input icon icon-search"></div>
+      </div>
+      <IconButton
+        icon="icon icon-refresh"
+        style="margin-left: 8px; padding: 0"
+        @click="onClickBtnRefresh"
+      />
+      <IconButton
+        icon="icon icon-excel"
+        style="margin-left: 8px; padding: 0"
+        @click="onClickBtnExport"
+      />
+    </div>
+
+    <div class="data" style="position: relative">
+      <table class="table" v-show="!isError">
+        <thead>
+          <tr style="position: sticky; top: 112px">
+            <th class="view-white pin" style="left: 0"></th>
+            <th class="pin" style="left: 16px; background-color: #eceef1">
+              <Checkbox />
+            </th>
+            <th style="min-width: 150px; text-align: center">MÃ NHÂN VIÊN</th>
+            <th style="min-width: 250px; text-align: center">TÊN NHÂN VIÊN</th>
+            <th style="min-width: 150px; text-align: center">GIỚI TÍNH</th>
+            <th style="min-width: 150px; text-align: center">NGÀY SINH</th>
+            <th style="min-width: 150px; text-align: center">SỐ CMND</th>
+            <th style="min-width: 150px; text-align: center">CHỨC DANH</th>
+            <th style="min-width: 150px; text-align: center">TÊN ĐƠN VỊ</th>
+            <th style="min-width: 150px; text-align: center">SỐ TÀI KHOẢN</th>
+            <th style="min-width: 150px; text-align: center">TÊN NGÂN HÀNG</th>
+            <th style="min-width: 300px; text-align: center">
+              CHI NHÁNH TK NGÂN HÀNG
+            </th>
+            <th
+              style="
+                min-width: 150px;
+                text-align: center;
+                right: 16px;
+                background-color: #eceef1;
+                border-left: 1px solid #ccc;
+                border-right: none;
+              "
+              class="pin"
+            >
+              CHỨC NĂNG
+            </th>
+            <th class="view-white pin" style="right: 0"></th>
+          </tr>
+        </thead>
+        <tbody v-if="employees && employees.length > 0">
+          <EmployeeItem
+            v-for="e in employees"
+            :key="e.employeeId"
+            :employee="e"
+            @toggleTableOption="toggleTableOption"
+            @onClickBtnEdit="onClickBtnEdit"
+          />
+        </tbody>
+      </table>
+
+      <div class="flex-center" v-if="isLoading">
+        <div class="loader"></div>
+      </div>
+
+      <div class="flex-center" v-if="isError">
+        <div class="icon icon-error"></div>
+        <div>Có lỗi xảy ra.</div>
+      </div>
+
+      <div
+        v-if="!isLoading && !isError && (!employees || employees.length < 1)"
+        style="display: flex; flex-direction: column; justify-content: center"
+      >
+        <img
+          src="../../assets/bg_report_nodata.svg"
+          alt="Không có dữ liệu"
+          style="margin: 20px auto"
+        />
+        <div style="text-align: center">Không có dữ liệu</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <Pagination
+      :page="page"
+      :pageSize="pageSize"
+      :totalPages="totalPages"
+      :totalRecord="totalRecord"
+      @onChangePage="onChangePage"
+      @update:pageSize="onChangePageSize"
+    />
+
+    <div class="hidden-left"></div>
+    <div class="hidden-right"></div>
 
     <EmployeeDialog
       v-if="employeeDialogConfig.isShow"
       ref="employeeDialogRef"
       :employee.sync="employeeDialogConfig.employee"
-      :isChanged.sync="employeeDialogConfig.isChanged"
       :errors.sync="employeeDialogConfig.errors"
       @onClose="onClickBtnCloseEmployeeDialog"
       @onSave="onSaveEmployee"
@@ -285,9 +278,9 @@ export default {
       employeeDialogConfig: {
         isShow: false,
         employee: null,
+        employeeOrigin: null,
         isInsert: true,
         errors: null,
-        isChanged: false,
       },
 
       /**
@@ -361,9 +354,8 @@ export default {
           this.employees = data.data;
           this.state = StateEnum.SUCCESS;
         })
-        .catch((err) => {
+        .catch(() => {
           this.state = StateEnum.ERROR;
-          console.log(err);
         });
     },
 
@@ -418,7 +410,9 @@ export default {
           },
           isInsert: true,
           errors: null,
-          isChanged: false,
+        };
+        this.employeeDialogConfig.employeeOrigin = {
+          ...this.employeeDialogConfig.employee,
         };
       });
     },
@@ -434,7 +428,9 @@ export default {
           employee: data,
           isInsert: false,
           errors: null,
-          isChanged: false,
+        };
+        this.employeeDialogConfig.employeeOrigin = {
+          ...this.employeeDialogConfig.employee,
         };
       });
     },
@@ -468,7 +464,6 @@ export default {
           .then((employee) => {
             this.employeeDialogConfig.isInsert = true;
             this.employeeDialogConfig.errors = null;
-            this.employeeDialogConfig.isChanged = false;
             this.employeeDialogConfig.employee = employee;
             return getNewEmployeeCode();
           })
@@ -476,6 +471,9 @@ export default {
             this.employeeDialogConfig.employee = {
               ...this.employeeDialogConfig.employee,
               employeeCode,
+            };
+            this.employeeDialogConfig.employeeOrigin = {
+              ...this.employeeDialogConfig.employee,
             };
             this.employeeDialogConfig.isShow = true;
           });
@@ -500,9 +498,12 @@ export default {
      * CreatedBy: dbhuan 16/05/2021
      */
     onClickBtnRefresh() {
-      this.page = 1;
-      this.employeeFilter = "";
-      this.getEmployees();
+      clearTimeout(this.timeOut);
+      this.timeOut = setTimeout(() => {
+        this.page = 1;
+        this.employeeFilter = "";
+        this.getEmployees();
+      }, 1000);
     },
 
     /**
@@ -616,9 +617,9 @@ export default {
       this.employeeDialogConfig = {
         isShow: false,
         employee: null,
+        employeeOrigin: null,
         errors: null,
         isInsert: true,
-        isChanged: false,
       };
     },
 
@@ -627,11 +628,16 @@ export default {
      * CreatedBy: dbhuan 18/05/2021
      */
     onClickBtnCloseEmployeeDialog() {
-      if (this.employeeDialogConfig.isChanged) {
-        this.infoDialogConfig.isShow = true;
-      } else {
-        this.closeEmployeeDialog();
+      for (let key in this.employeeDialogConfig.employee) {
+        if (
+          this.employeeDialogConfig.employeeOrigin[key] !=
+          this.employeeDialogConfig.employee[key]
+        ) {
+          this.infoDialogConfig.isShow = true;
+          return;
+        }
       }
+      this.closeEmployeeDialog();
     },
 
     /**
