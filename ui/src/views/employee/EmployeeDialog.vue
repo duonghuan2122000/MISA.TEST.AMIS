@@ -426,6 +426,7 @@ import Autocomplete from "../../components/common/Autocomplete.vue";
 
 //#region export
 export default {
+  // TODO: Lỗi blur input đơn vị
   //#region components
   components: {
     DatePicker,
