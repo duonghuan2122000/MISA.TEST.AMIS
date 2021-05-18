@@ -7,7 +7,7 @@
     ></div>
     <div class="dialog-content">
       <div
-        class="table-option-dropdown"
+        class="table-option-dropdown zoomIn"
         :style="{ top: top + 'px', left: left + 'px' }"
       >
         <div class="dropdown-item" @click="$emit('onClickDuplicate')">Nhân bản</div>

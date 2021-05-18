@@ -2,7 +2,7 @@
   <div>
     <div class="dialog">
       <div class="dialog-background" @click.prevent="closeDialog"></div>
-      <div class="dialog-content">
+      <div class="dialog-content zoomIn">
         <div class="tooltip-box tooltip">
           <div class="btn-close-dialog" @click.prevent="closeDialog">
             <div class="icon icon-close"></div>

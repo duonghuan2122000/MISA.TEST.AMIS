@@ -148,7 +148,6 @@ export default {
       this.isShow = false;
       this.$emit("update:value", suggestion.value);
       this.valueInput = suggestion.text;
-      // this.$el.querySelector("input").blur();
     },
 
     /**

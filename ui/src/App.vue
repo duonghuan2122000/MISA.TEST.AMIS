@@ -109,6 +109,50 @@ body {
   background: #555;
 }
 
+// animate css
+
+// zoomIn
+@keyframes zoomIn {
+  from {
+    opacity: 0;
+    transform: scale3d(0.8, 0.8, 0.8);
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+.zoomIn {
+  animation-name: zoomIn;
+  animation-duration: 0.25s;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.spin {
+  animation: spin 2s linear infinite;
+}
+
+@keyframes rotateIn {
+  from {
+    transform: rotate3d(0, 0, 1, 200deg);
+    opacity: 0;
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+}
+
 .icon {
   @include icon-default();
 
@@ -205,6 +249,7 @@ body {
   height: 100vh;
   width: $navbar-width;
   background-color: #393a3d;
+  transition: width 0.4s;
 
   &.toggle {
     width: $navbar-width-toggle;
@@ -226,6 +271,10 @@ body {
 
       .icon-three-stripes {
         display: none;
+      }
+
+      .flex-center {
+        left: $navbar-width-toggle;
       }
 
       .hidden-left {
@@ -456,7 +505,8 @@ body {
   }
 
   .flex-center {
-    height: 100px;
+    position: fixed;
+    inset: 0 0 0 $navbar-width;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -469,7 +519,7 @@ body {
       background-repeat: no-repeat;
       height: 32px;
       width: 32px;
-      transform: rotate(45 16 16);
+      z-index: 50;
     }
   }
 }
@@ -590,6 +640,8 @@ body {
   }
 
   &:checked + label {
+    animation-name: rotateIn;
+    animation-duration: 0.25s;
     border: 1px solid #adb8c0;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05),
       inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05),

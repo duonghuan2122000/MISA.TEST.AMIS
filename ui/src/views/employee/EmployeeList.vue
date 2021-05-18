@@ -81,10 +81,10 @@
       </table>
 
       <div class="flex-center" v-if="isLoading">
-        <div class="loader"></div>
+        <div class="loader spin"></div>
       </div>
 
-      <div class="flex-center" v-if="isError">
+      <div style="display: flex; flex-direction: row; justify-content: center; align-items: center" v-if="isError">
         <div class="icon icon-error"></div>
         <div>Có lỗi xảy ra.</div>
       </div>
@@ -498,12 +498,9 @@ export default {
      * CreatedBy: dbhuan 16/05/2021
      */
     onClickBtnRefresh() {
-      clearTimeout(this.timeOut);
-      this.timeOut = setTimeout(() => {
-        this.page = 1;
-        this.employeeFilter = "";
-        this.getEmployees();
-      }, 1000);
+      this.page = 1;
+      this.employeeFilter = "";
+      this.getEmployees();
     },
 
     /**
@@ -523,11 +520,13 @@ export default {
      * CreatedBy: dbhuan 16/05/2021
      */
     onChangePage(page) {
+      this.$el.scrollTo({ top: 0 });
       this.page = page;
       this.getEmployees();
     },
 
     onChangePageSize(pageSize) {
+      this.$el.scrollTo({ top: 0 });
       this.page = 1;
       this.pageSize = pageSize;
       this.getEmployees();

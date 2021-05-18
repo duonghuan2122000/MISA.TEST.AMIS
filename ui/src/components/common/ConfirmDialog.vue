@@ -1,7 +1,7 @@
 <template>
   <div class="dialog">
     <div class="dialog-background" @click="closeDialog"></div>
-    <div class="dialog-content" style="width: 444px">
+    <div class="dialog-content zoomIn" style="width: 444px">
       <div class="dialog-body">
         <div class="flex-row-align-center" style="padding-top: 32px">
           <div class="icon icon-warning-48"></div>

@@ -1,5 +1,8 @@
 <template>
-  <div class="navbar" :class="{ toggle: isNavbarToggle }">
+  <div
+    class="navbar"
+    :class="{ toggle: isNavbarToggle, slideInRight: !isNavbarToggle }"
+  >
     <!-- Logo box -->
     <div class="logo-box" v-if="!isNavbarToggle">
       <div class="toggle"></div>
