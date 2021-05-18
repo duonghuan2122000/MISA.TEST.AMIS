@@ -1,7 +1,7 @@
 <template>
   <tr>
     <td class="view-white pin" style="left: 0"></td>
-    <td class="pin" style="left: 16px">
+    <td class="pin" style="left: 16px; border-right: 1px dotted #ccc; border-bottom: 1px solid #ccc;">
       <Checkbox />
     </td>
     <td>{{ employee.employeeCode }}</td>
@@ -14,7 +14,7 @@
     <td>{{ employee.bankAccountNumber }}</td>
     <td>{{ employee.bankName }}</td>
     <td>{{ employee.bankBranchName }}</td>
-    <td class="pin" style="right: 16px">
+    <td class="pin" style="right: 16px; border-left: 1px dotted #ccc; border-bottom: 1px solid #ccc; border-right: none">
       <div class="table-option">
         <Button
           :color="null"

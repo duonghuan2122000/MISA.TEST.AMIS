@@ -179,6 +179,14 @@ body {
   &.icon-arrow-dropdown {
     @include icon-bind(-560px -359px, 16px);
   }
+
+  &.icon-calendar {
+    @include icon-bind(-128px -306px, 30px);
+  }
+
+  &.icon-question {
+    @include icon-bind(-826px -456px, 48px);
+  }
 }
 
 // Navbar
@@ -186,6 +194,10 @@ body {
   height: 100vh;
   width: $navbar-width;
   background-color: #393a3d;
+
+  // &.toggle {
+
+  // }
 
   //   Logo box
   .logo-box {
@@ -476,7 +488,6 @@ body {
   outline: none;
   border: 1px solid #ccc;
   padding-left: 12px;
-  border-radius: 4px;
   width: 100%;
 
   &::placeholder {
@@ -493,27 +504,27 @@ body {
 
   &.has-error {
     border-color: #f20;
-
-    & + .text-error {
-      display: none;
-    }
-
-    &:hover + .text-error {
-      white-space: nowrap;
-      display: inline-block;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      background-color: #38393d;
-      color: $color-white;
-      padding: 8px;
-      z-index: 10;
-    }
   }
 }
 
 .con-input {
   position: relative;
+
+  .text-error {
+    display: none;
+  }
+
+  &:hover .text-error {
+    white-space: nowrap;
+    display: inline-block;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #38393d;
+    color: $color-white;
+    padding: 8px;
+    z-index: 10;
+  }
 
   .icon-input {
     position: absolute;
@@ -623,10 +634,18 @@ body {
   white-space: nowrap;
   outline: none;
   border-spacing: 0;
+  // border-collapse: collapse;
 
-  th,
+  th {
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    text-align: left;
+    padding: 0 16px;
+  }
+
   td {
-    border: 1px solid #ccc;
+    border-right: 1px dotted #ccc;
+    border-bottom: 1px solid #ccc;
     text-align: left;
     padding: 0 16px;
   }
@@ -658,7 +677,6 @@ body {
   .pin {
     position: sticky;
     background-color: $color-white;
-    border: 1px solid #ccc;
     z-index: 2;
   }
 }

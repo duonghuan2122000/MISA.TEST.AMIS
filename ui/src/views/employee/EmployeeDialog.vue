@@ -41,7 +41,8 @@
                         $emit('update:employee', {
                           ...employee,
                           employeeCode: $event,
-                        })
+                        });
+                        $emit('update:isChanged', true);
                       "
                       @blur="validate({ employeeCode: 'required' })"
                     />
@@ -64,7 +65,8 @@
                         $emit('update:employee', {
                           ...employee,
                           employeeName: $event,
-                        })
+                        });
+                        $emit('update:isChanged', true);
                       "
                       @blur="validate({ employeeName: 'required' })"
                     />
@@ -83,8 +85,17 @@
                 <div class="col-5" style="padding-right: 16px">
                   <div>
                     <label class="label-input">Ngày sinh</label>
-                    <Input
-                      type="date"
+                    <DatePicker
+                      ref="dateOfBirth"
+                      displayFormat="DD/MM/YYYY"
+                      :inputAttributes="{
+                        class: 'input',
+                        style: 'font-size: 13px',
+                        placeholder: 'DD/MM/YYYY',
+                      }"
+                      :weekdays="localeDatePicker.weekdays"
+                      :months="localeDatePicker.months"
+                      :isDateDisabled="isDateDisabled"
                       :value="
                         employee && employee.dateOfBirth
                           ? formatYYYMMDD(employee.dateOfBirth)
@@ -167,30 +178,20 @@
                 >
                 <Autocomplete
                   :value="employee && employee.employeeDepartmentId"
-                  :suggestions="departments"
-                />
-                <!-- <select
-                  class="input"
-                  :class="{
-                    'has-error': errors && errors.employeeDepartmentId,
+                  :inputAttributes="{
+                    class: {
+                      'has-error': errors && errors.employeeDepartmentId,
+                    },
                   }"
-                  @input="
+                  :suggestions="departments"
+                  @update:value="
                     $emit('update:employee', {
                       ...employee,
                       employeeDepartmentId: $event,
                     })
                   "
-                  @blur.prevent="validate({ employeeDepartmentId: 'required' })"
-                >
-                  <option value=""></option>
-                  <option
-                    v-for="ed in employeeDepartments"
-                    :key="ed.employeeDepartmentId"
-                    :value="ed.employeeDepartmentId"
-                  >
-                    {{ ed.employeeDepartmentName }}
-                  </option>
-                </select> -->
+                  @blur="validate({ employeeDepartmentId: 'required' })"
+                />
                 <span
                   v-if="errors && errors.employeeDepartmentId"
                   class="text-error"
@@ -219,8 +220,16 @@
                 <div class="col-5">
                   <div>
                     <label class="label-input">Ngày cấp</label>
-                    <Input
-                      type="date"
+                    <DatePicker
+                      displayFormat="DD/MM/YYYY"
+                      :inputAttributes="{
+                        class: 'input',
+                        style: 'font-size: 13px',
+                        placeholder: 'DD/MM/YYYY',
+                      }"
+                      :isDateDisabled="isDateDisabled"
+                      :weekdays="localeDatePicker.weekdays"
+                      :months="localeDatePicker.months"
                       :value="
                         employee && employee.identityDate
                           ? formatYYYMMDD(employee.identityDate)
@@ -408,6 +417,9 @@ import { getEmployeeDepartments } from "../../api/employeeDepartment.js";
 
 import validation from "../../helpers/validation.js";
 
+import DatePicker from "vue-date-pick";
+import "vue-date-pick/dist/vueDatePick.css";
+
 import Button from "../../components/common/Button.vue";
 import Input from "../../components/common/Input.vue";
 import Radio from "../../components/common/Radio.vue";
@@ -418,6 +430,7 @@ import Autocomplete from "../../components/common/Autocomplete.vue";
 export default {
   //#region components
   components: {
+    DatePicker,
     Button,
     Input,
     Radio,
@@ -445,24 +458,67 @@ export default {
       default: null,
     },
 
+    /**
+     * Lỗi valid
+     * CreatedBy: dbhuan 18/05/2021
+     */
     errors: {
       type: Object,
       default: null,
+    },
+
+    /**
+     * Biến xác định có thay đổi thông tin nhân viên hay không.
+     * CreatedBy: dbhuan 18/05/2021
+     */
+    isChanged: {
+      type: Boolean,
+      default: false,
     },
   },
   //#endregion
 
   //#region data
   data: () => ({
+    /**
+     * Tên hiển thị lỗi của input.
+     * CreatedBy: dbhuan 18/05/2021
+     */
     displayNames: {
       employeeCode: "Mã nhân viên",
       employeeName: "Tên nhân viên",
       employeeDepartmentId: "Đơn vị nhân viên",
     },
+
+    /**
+     * Xác định trang thái dialog alert.
+     * CreatedBy: dbhuan 18/05/2021
+     */
     isShowAlertDialog: false,
     typeAlertDialog: "warning",
     msgAlertDialog: "",
     departments: [],
+
+    /**
+     * Locale datepicker
+     */
+    localeDatePicker: {
+      weekdays: ["T2", "T3", "T4", "T5", "T6", "T7", "CN"],
+      months: [
+        "Tháng 1",
+        "Tháng 2",
+        "Tháng 3",
+        "Tháng 4",
+        "Tháng 5",
+        "Tháng 6",
+        "Tháng 7",
+        "Tháng 8",
+        "Tháng 9",
+        "Tháng 10",
+        "Tháng 11",
+        "Tháng 12",
+      ],
+    },
   }),
   //#endregion
 
@@ -518,16 +574,6 @@ export default {
         employeeName: "required",
         employeeDepartmentId: "required",
       });
-      if (this.errors) {
-        for (let err in this.errors) {
-          if (this.errors[err]) {
-            this.msgAlertDialog = this.errors[err];
-            this.typeAlertDialog = "error";
-            this.isShowAlertDialog = true;
-            return;
-          }
-        }
-      }
     },
 
     /**
@@ -542,14 +588,20 @@ export default {
       }
 
       if (e.key == "s" && (e.ctrlKey || e.metaKey)) {
-        // Ctrl + S
+        // Ctrl + s
         this.onClickSave();
         e.preventDefault();
       }
 
-      if (e.key == "s" && e.key == "Shift" && (e.ctrlKey || e.metaKey)) {
+      if (e.key == "S" && (e.ctrlKey || e.metaKey)) {
+        // Ctrl + Shift + s
         this.onClickSaveAndAdd();
+        e.preventDefault();
       }
+    },
+
+    isDateDisabled(date) {
+      return date > new Date();
     },
   },
   //#endregion

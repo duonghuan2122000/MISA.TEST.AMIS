@@ -15,9 +15,8 @@
       <div class="toolbar-box">
         <div class="con-input">
           <Input
-            placeholder="Tìm theo mã, tên nhân viên"
+            placeholder="Tìm theo mã, tên hoặc số điện thoại"
             :hasIcon="true"
-            style="border-radius: 0"
             :value="employeeFilter"
             @input="onInputFilterEmployee"
           />
@@ -35,7 +34,7 @@
         />
       </div>
 
-      <div class="data">
+      <div class="data" style="position: relative">
         <div class="flex-center" v-if="isLoading">
           <div class="loader"></div>
         </div>
@@ -47,7 +46,7 @@
 
         <table class="table" v-show="!isError">
           <thead>
-            <tr>
+            <tr style="position: sticky; top: 112px">
               <th class="view-white pin" style="left: 0"></th>
               <th class="pin" style="left: 16px; background-color: #eceef1">
                 <Checkbox />
@@ -74,6 +73,8 @@
                   text-align: center;
                   right: 16px;
                   background-color: #eceef1;
+                  border-left: 1px solid #ccc;
+                  border-right: none;
                 "
                 class="pin"
               >
@@ -94,7 +95,7 @@
         </table>
 
         <div
-          v-if="!employees || employees.length < 1"
+          v-if="!isLoading && !isError && (!employees || employees.length < 1)"
           style="display: flex; flex-direction: column; justify-content: center"
         >
           <img
@@ -123,9 +124,11 @@
 
     <EmployeeDialog
       v-if="employeeDialogConfig.isShow"
+      ref="employeeDialogRef"
       :employee.sync="employeeDialogConfig.employee"
+      :isChanged.sync="employeeDialogConfig.isChanged"
       :errors.sync="employeeDialogConfig.errors"
-      @onClose="closeEmployeeDialog"
+      @onClose="onClickBtnCloseEmployeeDialog"
       @onSave="onSaveEmployee"
       @onSaveAndAdd="onSaveAndAddEmployee"
     />
@@ -157,6 +160,13 @@
         (alertDialogConfig.isShow = false), (alertDialogConfig.msg = '')
       "
     />
+
+    <InfoDialog
+      v-if="infoDialogConfig.isShow"
+      @onClose="infoDialogConfig.isShow = false"
+      @onNegative="onNegativeInfoDialog"
+      @onPositive="onPositiveInfoDialog"
+    />
   </div>
 </template>
 
@@ -184,6 +194,7 @@ import AlertDialog from "../../components/common/AlertDialog.vue";
 import EmployeeItem from "./EmployeeItem.vue";
 import EmployeeDialog from "./EmployeeDialog.vue";
 import EmployeeTableOption from "./EmployeeTableOption.vue";
+import InfoDialog from "./InfoDialog.vue";
 
 //#endregion
 
@@ -202,6 +213,7 @@ export default {
     EmployeeItem,
     EmployeeDialog,
     EmployeeTableOption,
+    InfoDialog,
   },
   //#endregion
 
@@ -275,6 +287,7 @@ export default {
         employee: null,
         isInsert: true,
         errors: null,
+        isChanged: false,
       },
 
       /**
@@ -286,10 +299,22 @@ export default {
         msg: "",
       },
 
+      /**
+       * Config của dialog alert.
+       * CreatedBy: dbhuan 18/05/2021
+       */
       alertDialogConfig: {
         isShow: false,
         msg: "",
         type: "warning",
+      },
+
+      /**
+       * Config của dialog info
+       * CreatedBy: dbhuan 18/05/2021
+       */
+      infoDialogConfig: {
+        isShow: false,
       },
 
       timeOut: null,
@@ -393,6 +418,7 @@ export default {
           },
           isInsert: true,
           errors: null,
+          isChanged: false,
         };
       });
     },
@@ -408,6 +434,7 @@ export default {
           employee: data,
           isInsert: false,
           errors: null,
+          isChanged: false,
         };
       });
     },
@@ -441,6 +468,7 @@ export default {
           .then((employee) => {
             this.employeeDialogConfig.isInsert = true;
             this.employeeDialogConfig.errors = null;
+            this.employeeDialogConfig.isChanged = false;
             this.employeeDialogConfig.employee = employee;
             return getNewEmployeeCode();
           })
@@ -523,13 +551,14 @@ export default {
 
     saveEmployee() {
       if (this.employeeDialogConfig.errors) {
-        for (let err in this.errors) {
+        for (let err in this.employeeDialogConfig.errors) {
           if (this.employeeDialogConfig.errors[err]) {
             this.alertDialogConfig = {
               isShow: true,
               type: "error",
               msg: this.employeeDialogConfig.errors[err],
             };
+            console.log(this.employeeDialogConfig.errors[err]);
             return Promise.reject();
           }
         }
@@ -558,12 +587,20 @@ export default {
         });
     },
 
+    /**
+     * click button cất
+     * CreatedBy: dbhuan 18/05/2021
+     */
     onSaveEmployee() {
       this.saveEmployee().then(() => {
         this.closeEmployeeDialog();
       });
     },
 
+    /**
+     * click button cất và thêm
+     * CreatedBy: dbhuan 18/05/2021
+     */
     onSaveAndAddEmployee() {
       this.saveEmployee().then(() => {
         console.log("click");
@@ -571,13 +608,49 @@ export default {
       });
     },
 
+    /**
+     * Hàm đóng dialog nhân viên
+     * CreatedBy: dbhuan 18/05/2021
+     */
     closeEmployeeDialog() {
       this.employeeDialogConfig = {
         isShow: false,
         employee: null,
         errors: null,
         isInsert: true,
+        isChanged: false,
       };
+    },
+
+    /**
+     * click button đóng dialog nhân viên
+     * CreatedBy: dbhuan 18/05/2021
+     */
+    onClickBtnCloseEmployeeDialog() {
+      if (this.employeeDialogConfig.isChanged) {
+        this.infoDialogConfig.isShow = true;
+      } else {
+        this.closeEmployeeDialog();
+      }
+    },
+
+    /**
+     * click button Không trong info dialog.
+     * CreatedBy: dbhuan 18/05/2021
+     */
+    onNegativeInfoDialog() {
+      this.infoDialogConfig.isShow = false;
+      this.closeEmployeeDialog();
+    },
+
+    /**
+     * click button Có trong info dialog
+     * CreatedBy: dbhuan 18/05/2021
+     */
+    onPositiveInfoDialog() {
+      this.infoDialogConfig.isShow = false;
+      this.$refs.employeeDialogRef.validateBeforeSave();
+      this.saveEmployee();
     },
   },
   //#endregion

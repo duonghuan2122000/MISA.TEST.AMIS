@@ -5,6 +5,7 @@
         type="text"
         class="input has-icon"
         :value="valueInput"
+        v-bind="inputAttributes"
         @focus="showSuggestion"
         @blur="onBlur"
         @keydown.up.prevent="up"
@@ -50,7 +51,16 @@ export default {
      * CreatedBy: dbhuan 17/05/2021
      */
     value: {
-      type: Number,
+      type: String,
+      default: null,
+    },
+
+    /**
+     * Attribute thêm cho input
+     * CreatedBy: dbhuan 18/05/2021
+     */
+    inputAttributes: {
+      type: Object,
       default: null,
     },
   },
@@ -138,7 +148,7 @@ export default {
       this.isShow = false;
       this.$emit("update:value", suggestion.value);
       this.valueInput = suggestion.text;
-      this.$el.querySelector("input").blur();
+      // this.$el.querySelector("input").blur();
     },
 
     /**

@@ -154,6 +154,7 @@ namespace MISA.Core.Services
         protected override void CustomValidate(Employee employee, bool isInsert = true)
         {
             bool isExists;
+            employee.EmployeeCode = employee.EmployeeCode.Trim();
             if(isInsert == true)
             {
                 isExists = _employeeRepository.CheckEmployeeCodeExists(employee.EmployeeCode);
