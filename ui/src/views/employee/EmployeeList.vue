@@ -51,7 +51,7 @@
             <th style="min-width: 150px; text-align: center">NGÀY SINH</th>
             <th style="min-width: 150px; text-align: center">SỐ CMND</th>
             <th style="min-width: 150px; text-align: center">CHỨC DANH</th>
-            <th style="min-width: 150px; text-align: center">TÊN ĐƠN VỊ</th>
+            <th style="min-width: 200px; text-align: center">TÊN ĐƠN VỊ</th>
             <th style="min-width: 150px; text-align: center">SỐ TÀI KHOẢN</th>
             <th style="min-width: 150px; text-align: center">TÊN NGÂN HÀNG</th>
             <th style="min-width: 300px; text-align: center">

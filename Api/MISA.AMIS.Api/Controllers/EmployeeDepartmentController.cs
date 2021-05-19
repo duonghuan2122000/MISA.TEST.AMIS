@@ -20,6 +20,72 @@ namespace MISA.AMIS.Api.Controllers
             
         }
         #endregion
+
+        #region METHODS
+        /// <summary>
+        /// Lấy thông tin thực thể t
+        /// </summary>
+        /// <param name="id">id thực thể</param>
+        /// <returns>
+        /// 200 - Có dữ liệu
+        /// 204 - Không có dữ liệu
+        /// 400 - Lỗi client
+        /// 500 - Lỗi server
+        /// </returns>
+        [NonAction]
+        public override IActionResult Get(Guid id)
+        {
+            return base.Get(id);
+        }
+
+        /// <summary>
+        /// Insert một thực thể t
+        /// </summary>
+        /// <param name="t">Thông tin thực thể t</param>
+        /// <returns>
+        /// 200 - Có dữ liệu
+        /// 204 - Không có dữ liệu
+        /// 400 - Lỗi client
+        /// 500 - Lỗi server
+        /// </returns>
+        [NonAction]
+        public override IActionResult Insert(EmployeeDepartment t)
+        {
+            return base.Insert(t);
+        }
+
+        /// <summary>
+        /// Update một thực thể t
+        /// </summary>
+        /// <param name="t">Thông tin thực thể t</param>
+        /// <returns>
+        /// 200 - Có dữ liệu
+        /// 204 - Không có dữ liệu
+        /// 400 - Lỗi client
+        /// 500 - Lỗi server
+        /// </returns>
+        [NonAction]
+        public override IActionResult Update(EmployeeDepartment t)
+        {
+            return base.Update(t);
+        }
+
+        /// <summary>
+        /// Delete một thực thể t
+        /// </summary>
+        /// <param name="id">id thực thể</param>
+        /// <returns>
+        /// 200 - Có dữ liệu
+        /// 204 - Không có dữ liệu
+        /// 400 - Lỗi client
+        /// 500 - Lỗi server
+        /// </returns>
+        [NonAction]
+        public override IActionResult Delete(Guid id)
+        {
+            return base.Delete(id);
+        }
+        #endregion
     }
-    #endregion
+#endregion
 }

@@ -45,7 +45,7 @@ namespace MISA.AMIS.Api.Controllers
         /// 500 - Lỗi server
         /// </returns>
         [HttpGet]
-        public IActionResult GetAll()
+        public virtual IActionResult GetAll()
         {
             var res = _baseService.GetAll();
             if (res.Any())
@@ -66,7 +66,7 @@ namespace MISA.AMIS.Api.Controllers
         /// 500 - Lỗi server
         /// </returns>
         [HttpGet("{id}")]
-        public IActionResult Get(Guid id)
+        public virtual IActionResult Get(Guid id)
         {
             var res = _baseService.Get(id);
 
@@ -88,7 +88,7 @@ namespace MISA.AMIS.Api.Controllers
         /// 500 - Lỗi server
         /// </returns>
         [HttpPost]
-        public IActionResult Insert(T t)
+        public virtual IActionResult Insert(T t)
         {
             var rowsAffect = _baseService.Insert(t);
             if(rowsAffect > 0)
@@ -109,7 +109,7 @@ namespace MISA.AMIS.Api.Controllers
         /// 500 - Lỗi server
         /// </returns>
         [HttpPut]
-        public IActionResult Update(T t)
+        public virtual IActionResult Update(T t)
         {
             var rowsAffect = _baseService.Update(t);
             if(rowsAffect > 0)
@@ -130,7 +130,7 @@ namespace MISA.AMIS.Api.Controllers
         /// 500 - Lỗi server
         /// </returns>
         [HttpDelete("{id}")]
-        public IActionResult Delete(Guid id)
+        public virtual IActionResult Delete(Guid id)
         {
             var rowsAffect = _baseService.Delete(id);
             if(rowsAffect > 0)
