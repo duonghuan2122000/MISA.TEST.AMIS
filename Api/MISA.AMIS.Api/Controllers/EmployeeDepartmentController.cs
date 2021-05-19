@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MISA.Core.Entities;
 using MISA.Core.Interfaces.Services;
 using System;
 using System.Collections.Generic;
@@ -11,32 +12,12 @@ namespace MISA.AMIS.Api.Controllers
     #region EmployeeDepartmentController
     [Route("api/v1/employee-department")]
     [ApiController]
-    public class EmployeeDepartmentController : ControllerBase
+    public class EmployeeDepartmentController : BaseController<EmployeeDepartment>
     {
-        #region PROPERTIES
-        private IEmployeeDepartmentService _employeeDepartmentService;
-        #endregion
-
         #region CONSTRUCTOR
-        public EmployeeDepartmentController(IEmployeeDepartmentService employeeDepartmentService)
+        public EmployeeDepartmentController(IEmployeeDepartmentService employeeDepartmentService): base(employeeDepartmentService)
         {
-            _employeeDepartmentService = employeeDepartmentService;
-        }
-        #endregion
-
-        #region METHODS
-        /// <summary>
-        /// Lấy danh sách đơn vị nhân viên.
-        /// </summary>
-        /// <returns>
-        /// 200 - Có dữ liệu trả về.
-        /// 500 - Lỗi server.
-        /// </returns>
-        [HttpGet]
-        public IActionResult GetEmployeeDepartments()
-        {
-            var res = _employeeDepartmentService.GetAll();
-            return Ok(res);
+            
         }
         #endregion
     }

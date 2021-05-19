@@ -12,7 +12,7 @@ const PREFIX_URL = "api/v1/employees";
  * CreatedBy: dbhuan 15/05/2021
  */
 export const getEmployees = ({ page = 1, pageSize = 10, filter = "" }) =>
-    req.get(`${PREFIX_URL}?page=${page}&pageSize=${pageSize}&filter=${filter}`)
+    req.get(`${PREFIX_URL}/Filter?page=${page}&pageSize=${pageSize}&filter=${filter}`)
         .then(res => res.data)
         .then(data => {
             return Promise.resolve(data);

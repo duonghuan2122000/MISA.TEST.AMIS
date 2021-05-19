@@ -469,6 +469,10 @@ export default {
       }
     },
 
+    /**
+     * click button nhân bản
+     * CreatedBy: dbhuan 18/05/2021
+     */
     onClickDuplicate() {
       this.employeeTableOptionConfig = {
         isShow: false,
@@ -538,6 +542,10 @@ export default {
       this.getEmployees();
     },
 
+    /**
+     * Hàm gọi khi thay đổi số bản ghi trên trang
+     * CreatedBy: dbhuan 18/05/2021
+     */
     onChangePageSize(pageSize) {
       this.$el.scrollTo({ top: 0 });
       this.page = 1;
@@ -555,13 +563,19 @@ export default {
         msg: "",
       };
       if (this.employeeModify) {
-        delEmployee(this.employeeModify.employeeId).then(() => {
-          this.page = 1;
-          this.getEmployees();
-        }).catch();
+        delEmployee(this.employeeModify.employeeId)
+          .then(() => {
+            this.page = 1;
+            this.getEmployees();
+          })
+          .catch();
       }
     },
 
+    /**
+     * Hàm lưu thông tin nhân viên
+     * CreatedBy: dbhuan 18/05/2021
+     */
     saveEmployee() {
       if (this.employeeDialogConfig.errors) {
         for (let err in this.employeeDialogConfig.errors) {
@@ -604,9 +618,11 @@ export default {
      * CreatedBy: dbhuan 18/05/2021
      */
     onSaveEmployee() {
-      this.saveEmployee().then(() => {
-        this.closeEmployeeDialog();
-      }).catch();
+      this.saveEmployee()
+        .then(() => {
+          this.closeEmployeeDialog();
+        })
+        .catch();
     },
 
     /**
@@ -614,9 +630,11 @@ export default {
      * CreatedBy: dbhuan 18/05/2021
      */
     onSaveAndAddEmployee() {
-      this.saveEmployee().then(() => {
-        this.onClickBtnAddEmployee();
-      }).catch();
+      this.saveEmployee()
+        .then(() => {
+          this.onClickBtnAddEmployee();
+        })
+        .catch();
     },
 
     /**

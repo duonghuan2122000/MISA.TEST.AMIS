@@ -336,7 +336,7 @@ a {
       &.active {
         position: relative;
         background-color: rgba(255, 255, 255, 0.16);
-        
+
         &::before {
           content: "";
           top: 0;
@@ -645,10 +645,7 @@ a {
   display: none;
 
   & + label {
-    background-color: #fafafa;
     border: 1px solid #cacece;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05),
-      inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
     height: 18px;
     width: 18px;
     border-radius: 3px;
@@ -656,8 +653,8 @@ a {
     position: relative;
 
     &:active {
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05),
-        inset 0px 1px 3px rgba(0, 0, 0, 0.1);
+      // box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05),
+      //   inset 0px 1px 3px rgba(0, 0, 0, 0.1);
     }
   }
 
@@ -665,10 +662,6 @@ a {
     animation-name: rotateIn;
     animation-duration: 0.25s;
     border: 1px solid #adb8c0;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05),
-      inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05),
-      inset 15px 10px -12px rgba(255, 255, 255, 0.1);
-    color: #99a1a7;
 
     &:active {
       box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05),
