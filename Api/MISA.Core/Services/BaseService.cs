@@ -9,6 +9,7 @@ using System.Text;
 
 namespace MISA.Core.Services
 {
+    #region BaseService
     /// <summary>
     /// Base service.
     /// </summary>
@@ -16,11 +17,14 @@ namespace MISA.Core.Services
     /// CreatedBy: dbhuan (28/04/2021)
     public class BaseService<T> : IBaseService<T> where T : class
     {
+        #region PROPERTIES
         /// <summary>
         /// Base repository.
         /// </summary>
         private IBaseRepository<T> _baseRepository;
+        #endregion
 
+        #region CONSTRUCTOR
         /// <summary>
         /// Phương thức khởi tạo.
         /// </summary>
@@ -30,7 +34,9 @@ namespace MISA.Core.Services
         {
             _baseRepository = baseRepository;
         }
+        #endregion
 
+        #region METHODS
         /// <summary>
         /// Phương thức xóa một thực thể.
         /// </summary>
@@ -141,6 +147,16 @@ namespace MISA.Core.Services
         {
 
         }
-    }
 
+        /// <summary>
+        /// Lấy toàn bộ danh sách thực thể T
+        /// </summary>
+        /// <returns>Danh sách thực thể T</returns>
+        public IEnumerable<T> GetAll()
+        {
+            return _baseRepository.GetAll();
+        }
+        #endregion
+    }
+    #endregion
 }

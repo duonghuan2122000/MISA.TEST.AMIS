@@ -9,13 +9,8 @@ namespace MISA.Core.Interfaces.Repositories
     /// Interface kho chứa đơn vị nhân viên
     /// </summary>
     /// CreatedBy: dbhuan (11/05/2021)
-    public interface IEmployeeDepartmentRepository
+    public interface IEmployeeDepartmentRepository: IBaseRepository<EmployeeDepartment>
     {
-        /// <summary>
-        /// Lấy danh sách đơn vị nhân viên
-        /// </summary>
-        /// <returns>Danh sách đơn vị nhân viên</returns>
-        /// CreatedBy: dbhuan (11/05/2021)
-        public IEnumerable<EmployeeDepartment> GetEmployeeDepartments();
+
     }
 }

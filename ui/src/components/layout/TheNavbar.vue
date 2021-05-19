@@ -32,12 +32,13 @@
         <div class="navbar-item-text">Tổng quan</div>
       </div>
 
-      <div class="navbar-item">
+      <!-- Add class để active link -->
+      <router-link :to="{ name: 'Employee' }" class="navbar-item">
         <div class="navbar-item-icon">
           <div class="icon icon-navbar-cash"></div>
         </div>
         <div class="navbar-item-text">Tiền mặt</div>
-      </div>
+      </router-link>
 
       <div class="navbar-item">
         <div class="navbar-item-icon">

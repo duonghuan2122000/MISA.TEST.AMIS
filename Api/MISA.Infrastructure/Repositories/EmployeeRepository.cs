@@ -12,13 +12,17 @@ namespace MISA.Infrastructure.Repositories
     /// Kho chứa nhân viên
     /// </summary>
     /// CreatedBy: dbhuan (09/05/2021)
+    #region EmployeeRepository
     public class EmployeeRepository : BaseRepository<Employee>, IEmployeeRepository
     {
+        #region PROPERTIES
         /// <summary>
         /// string config kết nối db.
         /// </summary>
         private string _connectionString;
+        #endregion
 
+        #region CONSTRUCTOR
         /// <summary>
         /// Hàm khởi tạo.
         /// </summary>
@@ -27,7 +31,9 @@ namespace MISA.Infrastructure.Repositories
         {
             _connectionString = configuration.GetConnectionString("ConnectionDB");
         }
+        #endregion
 
+        #region METHODS
         /// <summary>
         /// Kiểm tra trùng mã nhân viên
         /// </summary>
@@ -114,5 +120,7 @@ namespace MISA.Infrastructure.Repositories
 
             return "NV-" + employeeCodeNum;
         }
+        #endregion
     }
+    #endregion
 }

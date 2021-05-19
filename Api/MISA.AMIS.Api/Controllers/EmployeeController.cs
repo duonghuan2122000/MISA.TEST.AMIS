@@ -13,15 +13,19 @@ using System.Threading.Tasks;
 
 namespace MISA.AMIS.Api.Controllers
 {
+    #region EmployeeController
     [Route("api/v1/employees")]
     [ApiController]
     public class EmployeeController : ControllerBase
     {
+        #region PROPERTIES
         /// <summary>
         /// Dịch vụ nhân viên
         /// </summary>
         private IEmployeeService _employeeService;
+        #endregion
 
+        #region CONSTRUCTOR
         /// <summary>
         /// Hàm khởi tạo
         /// </summary>
@@ -30,7 +34,9 @@ namespace MISA.AMIS.Api.Controllers
         {
             _employeeService = employeeService;
         }
+        #endregion
 
+        #region METHODS
         /// <summary>
         /// Lấy danh sách nhân viên có lọc.
         /// </summary>
@@ -159,19 +165,20 @@ namespace MISA.AMIS.Api.Controllers
         /// <summary>
         /// Xuất excel
         /// </summary>
-        /// <param name="employeeFilter">Bộ lọc danh sách nhân viên.</param>
         /// <returns>
         /// 200 - thành công.
         /// 500 - lỗi server.
         /// </returns>
         [HttpGet("Export")]
-        public IActionResult Export([FromQuery] EmployeeFilter employeeFilter)
+        public IActionResult Export()
         {
-            var stream = _employeeService.ExportExcel(employeeFilter);
+            var stream = _employeeService.ExportExcel();
             string excelName = $"Danh-sach-nhan-vien-{DateTime.Now.ToString("yyyyMMddHHmmssfff")}.xlsx";
 
             //return File(stream, "application/octet-stream", excelName);
             return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
         }
+        #endregion
     }
+    #endregion
 }

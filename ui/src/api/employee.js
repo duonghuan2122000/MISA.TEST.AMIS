@@ -50,8 +50,8 @@ export const getEmployee = (employeeId) =>
  * Export excel
  * @param {object} param
  */
-export const exportExcel = ({ page, pageSize, filter }) => {
-    window.open(`${BASE_URL}${PREFIX_URL}/Export?page=${page}&pageSize=${pageSize}&filter=${filter}`, '_blank');
+export const exportExcel = () => {
+    window.open(`${BASE_URL}${PREFIX_URL}/Export`, '_blank');
 }
 //#endregion
 

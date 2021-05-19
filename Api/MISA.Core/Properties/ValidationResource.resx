@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="MsgErrorEmployeeCodeExists" xml:space="preserve">
-    <value>Mã nhân viên {0} đã tồn tại trên hệ thống</value>
+    <value>Mã nhân viên &lt;{0}&gt; đã tồn tại trên hệ thống</value>
   </data>
   <data name="MsgErrorPropertyRequired" xml:space="preserve">
     <value>{0} không được để trống</value>

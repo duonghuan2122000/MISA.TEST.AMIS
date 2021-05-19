@@ -12,6 +12,12 @@ namespace MISA.Core.Interfaces.Services
     public interface IBaseService<T> where T : class
     {
         /// <summary>
+        /// Lấy toàn bộ danh sách thực thể T
+        /// </summary>
+        /// <returns>Danh sách thực thể T</returns>
+        public IEnumerable<T> GetAll();
+
+        /// <summary>
         /// Lấy thông tin một thực thể T theo id.   
         /// </summary>
         /// <param name="id">id của thực thể cần lấy.</param>

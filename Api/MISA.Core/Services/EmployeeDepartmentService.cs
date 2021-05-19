@@ -10,23 +10,19 @@ namespace MISA.Core.Services
     /// <summary>
     /// Dịch vụ đơn vị nhân viên
     /// </summary>
-    public class EmployeeDepartmentService: IEmployeeDepartmentService
+    #region EmployeeDepartmentService
+    public class EmployeeDepartmentService: BaseService<EmployeeDepartment>, IEmployeeDepartmentService
     {
-        private IEmployeeDepartmentRepository _employeeDepartmentRepository;
-
-        public EmployeeDepartmentService(IEmployeeDepartmentRepository employeeDepartmentRepository)
-        {
-            _employeeDepartmentRepository = employeeDepartmentRepository;
-        }
-
+        #region CONSTRUCTOR
         /// <summary>
-        /// Lấy danh sách đơn vị nhân viên
+        /// Hàm khởi tạo
         /// </summary>
-        /// <returns>Danh sách đơn vị nhân viên</returns>
-        /// CreatedBy: dbhuan (11/05/2021)
-        public IEnumerable<EmployeeDepartment> GetEmployeeDepartments()
+        /// <param name="employeeDepartmentRepository">kho chứa đơn vị nhân viên</param>
+        public EmployeeDepartmentService(IEmployeeDepartmentRepository employeeDepartmentRepository) : base(employeeDepartmentRepository)
         {
-            return _employeeDepartmentRepository.GetEmployeeDepartments();
+
         }
+        #endregion
     }
+    #endregion
 }

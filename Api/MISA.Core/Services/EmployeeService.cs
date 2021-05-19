@@ -20,13 +20,17 @@ namespace MISA.Core.Services
     /// Dịch vụ nhân viên
     /// </summary>
     /// CreatedBy: dbhuan (09/05/2021)
+    #region EmployeeService
     public class EmployeeService: BaseService<Employee>, IEmployeeService
     {
+        #region PROPERTIES
         /// <summary>
         /// kho chứa nhân viên
         /// </summary>
         private IEmployeeRepository _employeeRepository;
+        #endregion
 
+        #region CONSTRUCTOR
         /// <summary>
         /// Hàm khởi tạo
         /// </summary>
@@ -35,7 +39,9 @@ namespace MISA.Core.Services
         {
             _employeeRepository = employeeRepository;
         }
+        #endregion
 
+        #region METHODS
         /// <summary>
         /// Lấy danh sách nhân viên có lọc
         /// </summary>
@@ -62,15 +68,15 @@ namespace MISA.Core.Services
         }
 
         /// <summary>
-        /// Export file excel danh sách nhân viên có bộ lọc
+        /// Export file excel danh sách nhân viên
         /// </summary>
         /// <param name="employeeFilter">Bộ lọc</param>
         /// <returns>Stream</returns>
         /// CreatedBy: dbhuan (11/05/2021)
-        public Stream ExportExcel(EmployeeFilter employeeFilter)
+        public Stream ExportExcel()
         {
-            var res = _employeeRepository.GetEmployees(employeeFilter);
-            var list = res.Data.ToList();
+            var res = _employeeRepository.GetAll();
+            var list = res.ToList();
             var stream = new MemoryStream();
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             using var package = new ExcelPackage(stream);
@@ -172,6 +178,8 @@ namespace MISA.Core.Services
                 throw new ClientException(string.Format(Properties.ValidationResource.MsgErrorEmployeeCodeExists, employee.EmployeeCode), dictionary);
             }
         }
+        #endregion
 
     }
+    #endregion
 }

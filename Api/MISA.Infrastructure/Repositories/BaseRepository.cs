@@ -9,17 +9,22 @@ using System.Text;
 
 namespace MISA.Infrastructure.Repositories
 {
+
     /// <summary>
     /// Repository base class
     /// </summary>
     /// <typeparam name="T">Một thực thể.</typeparam>
     /// CreatedBy: dbhuan (28/04/2021)
+    #region BaseRepository
     public class BaseRepository<T> : IBaseRepository<T> where T : class
     {
+        #region PROPERTIES
         protected IConfiguration _configuration;
         protected string _connectionString;
         private string _tableName = typeof(T).Name;
+        #endregion
 
+        #region CONSTRUCTOR
         /// <summary>
         /// Phương thức khởi tạo
         /// </summary>
@@ -29,6 +34,25 @@ namespace MISA.Infrastructure.Repositories
         {
             _configuration = configuration;
             _connectionString = _configuration.GetConnectionString("ConnectionDB");
+        }
+        #endregion
+
+        #region METHODS
+        /// <summary>
+        /// Lấy toàn bộ danh sách thực thể T
+        /// </summary>
+        /// <returns>Danh sách thực thể T</returns>
+        public IEnumerable<T> GetAll()
+        {
+            // Thiết lập kết nối cơ sở dữ liệu.
+            var connection = new MySqlConnection(_connectionString);
+
+            // stored procedures.
+            var proc = $"Proc_GetAll{_tableName}s";
+
+            var res = connection.Query<T>(proc, commandType: CommandType.StoredProcedure);
+
+            return res;
         }
 
         /// <summary>
@@ -109,5 +133,7 @@ namespace MISA.Infrastructure.Repositories
 
             return rowsAffect;
         }
+        #endregion
     }
+    #endregion
 }

@@ -34,7 +34,11 @@
     </div>
 
     <div class="data" style="position: relative">
-      <table class="table" v-show="!isError">
+      <table
+        style="padding-bottom: 16px; background-color: #fff"
+        class="table"
+        v-show="!isError"
+      >
         <thead>
           <tr style="position: sticky; top: 112px">
             <th class="view-white pin" style="left: 0"></th>
@@ -84,7 +88,15 @@
         <div class="loader spin"></div>
       </div>
 
-      <div style="display: flex; flex-direction: row; justify-content: center; align-items: center" v-if="isError">
+      <div
+        style="
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
+        "
+        v-if="isError"
+      >
         <div class="icon icon-error"></div>
         <div>Có lỗi xảy ra.</div>
       </div>
@@ -402,19 +414,21 @@ export default {
      * CreatedBy: dbhuan 16/05/2021
      */
     onClickBtnAddEmployee() {
-      getNewEmployeeCode().then((data) => {
-        this.employeeDialogConfig = {
-          isShow: true,
-          employee: {
-            employeeCode: data,
-          },
-          isInsert: true,
-          errors: null,
-        };
-        this.employeeDialogConfig.employeeOrigin = {
-          ...this.employeeDialogConfig.employee,
-        };
-      });
+      getNewEmployeeCode()
+        .then((data) => {
+          this.employeeDialogConfig = {
+            isShow: true,
+            employee: {
+              employeeCode: data,
+            },
+            isInsert: true,
+            errors: null,
+          };
+          this.employeeDialogConfig.employeeOrigin = {
+            ...this.employeeDialogConfig.employee,
+          };
+        })
+        .catch();
     },
 
     /**
@@ -422,17 +436,19 @@ export default {
      * CreatedBy: dbhuan 16/05/2021
      */
     onClickBtnEdit(employeeId) {
-      getEmployee(employeeId).then((data) => {
-        this.employeeDialogConfig = {
-          isShow: true,
-          employee: data,
-          isInsert: false,
-          errors: null,
-        };
-        this.employeeDialogConfig.employeeOrigin = {
-          ...this.employeeDialogConfig.employee,
-        };
-      });
+      getEmployee(employeeId)
+        .then((data) => {
+          this.employeeDialogConfig = {
+            isShow: true,
+            employee: data,
+            isInsert: false,
+            errors: null,
+          };
+          this.employeeDialogConfig.employeeOrigin = {
+            ...this.employeeDialogConfig.employee,
+          };
+        })
+        .catch();
     },
 
     /**
@@ -476,7 +492,8 @@ export default {
               ...this.employeeDialogConfig.employee,
             };
             this.employeeDialogConfig.isShow = true;
-          });
+          })
+          .catch();
       }
     },
 
@@ -508,11 +525,7 @@ export default {
      * CreatedBy: dbhuan 16/05/2021
      */
     onClickBtnExport() {
-      exportExcel({
-        page: this.page,
-        pageSize: this.pageSize,
-        filter: this.employeeFilter,
-      });
+      exportExcel();
     },
 
     /**
@@ -545,7 +558,7 @@ export default {
         delEmployee(this.employeeModify.employeeId).then(() => {
           this.page = 1;
           this.getEmployees();
-        });
+        }).catch();
       }
     },
 
@@ -558,7 +571,6 @@ export default {
               type: "error",
               msg: this.employeeDialogConfig.errors[err],
             };
-            console.log(this.employeeDialogConfig.errors[err]);
             return Promise.reject();
           }
         }
@@ -594,7 +606,7 @@ export default {
     onSaveEmployee() {
       this.saveEmployee().then(() => {
         this.closeEmployeeDialog();
-      });
+      }).catch();
     },
 
     /**
@@ -603,9 +615,8 @@ export default {
      */
     onSaveAndAddEmployee() {
       this.saveEmployee().then(() => {
-        console.log("click");
         this.onClickBtnAddEmployee();
-      });
+      }).catch();
     },
 
     /**

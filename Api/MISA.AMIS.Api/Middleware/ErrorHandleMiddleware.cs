@@ -12,13 +12,17 @@ namespace MISA.AMIS.Api.Middleware
     /// ErrorHandleMiddleware
     /// </summary>
     /// CreatedBy: dbhuan (09/05/2021)
+    #region ErrorHandleMiddleware
     public class ErrorHandleMiddleware
     {
+        #region PROPERTIES
         /// <summary>
         /// Luồng request.
         /// </summary>
         private RequestDelegate _next;
+        #endregion
 
+        #region CONSTRUCTOR
         /// <summary>
         /// Hàm khởi tạo
         /// </summary>
@@ -27,7 +31,9 @@ namespace MISA.AMIS.Api.Middleware
         {
             _next = next;
         }
+        #endregion
 
+        #region METHODS
         /// <summary>
         /// Hàm call của middleware
         /// </summary>
@@ -74,5 +80,7 @@ namespace MISA.AMIS.Api.Middleware
             context.Response.ContentType = "application/json";
             return context.Response.WriteAsync(result);
         }
+        #endregion
     }
+    #endregion
 }

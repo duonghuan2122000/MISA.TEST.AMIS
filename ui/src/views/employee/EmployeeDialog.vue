@@ -3,11 +3,19 @@
     <div class="dialog">
       <div class="dialog-background" @click.prevent="closeDialog"></div>
       <div class="dialog-content zoomIn">
-        <div class="tooltip-box tooltip">
-          <div class="btn-close-dialog" @click.prevent="closeDialog">
-            <div class="icon icon-close"></div>
+        <div class="tooltip-box">
+          <div class="tooltip">
+            <div class="btn-close-dialog">
+              <div class="icon icon-help"></div>
+            </div>
+            <div class="tooltip-text">Giúp (F1)</div>
           </div>
-          <div class="tooltip-text">Đóng (ESC)</div>
+          <div class="tooltip">
+            <div class="btn-close-dialog" @click.prevent="closeDialog">
+              <div class="icon icon-close"></div>
+            </div>
+            <div class="tooltip-text">Đóng (ESC)</div>
+          </div>
         </div>
 
         <div class="dialog-header">
@@ -595,12 +603,14 @@ export default {
 
   //#region lifecycle
   mounted() {
-    getEmployeeDepartments().then((data) => {
-      this.departments = data.map((d) => ({
-        value: d.employeeDepartmentId,
-        text: d.employeeDepartmentName,
-      }));
-    });
+    getEmployeeDepartments()
+      .then((data) => {
+        this.departments = data.map((d) => ({
+          value: d.employeeDepartmentId,
+          text: d.employeeDepartmentName,
+        }));
+      })
+      .catch();
     this.$refs.employeeCode.$el.focus();
     document.addEventListener("keydown", this.onKeyDownListener);
   },

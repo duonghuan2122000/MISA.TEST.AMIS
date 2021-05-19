@@ -167,6 +167,7 @@ export default {
     onBlur() {
       setTimeout(() => {
         this.isShow = false;
+        this.$emit('blur')
       }, 500);
     },
 

@@ -8,17 +8,23 @@ using System.Threading.Tasks;
 
 namespace MISA.AMIS.Api.Controllers
 {
+    #region EmployeeDepartmentController
     [Route("api/v1/employee-department")]
     [ApiController]
     public class EmployeeDepartmentController : ControllerBase
     {
+        #region PROPERTIES
         private IEmployeeDepartmentService _employeeDepartmentService;
+        #endregion
 
+        #region CONSTRUCTOR
         public EmployeeDepartmentController(IEmployeeDepartmentService employeeDepartmentService)
         {
             _employeeDepartmentService = employeeDepartmentService;
         }
+        #endregion
 
+        #region METHODS
         /// <summary>
         /// Lấy danh sách đơn vị nhân viên.
         /// </summary>
@@ -29,8 +35,10 @@ namespace MISA.AMIS.Api.Controllers
         [HttpGet]
         public IActionResult GetEmployeeDepartments()
         {
-            var res = _employeeDepartmentService.GetEmployeeDepartments();
+            var res = _employeeDepartmentService.GetAll();
             return Ok(res);
         }
+        #endregion
     }
+    #endregion
 }

@@ -28,11 +28,11 @@ namespace MISA.Core.Interfaces.Services
         public string GetNewEmployeeCode();
 
         /// <summary>
-        /// Export file excel danh sách nhân viên có bộ lọc
+        /// Export file excel danh sách nhân viên
         /// </summary>
         /// <param name="employeeFilter">Bộ lọc</param>
         /// <returns>Stream</returns>
         /// CreatedBy: dbhuan (11/05/2021)
-        public Stream ExportExcel(EmployeeFilter employeeFilter);
+        public Stream ExportExcel();
     }
 }

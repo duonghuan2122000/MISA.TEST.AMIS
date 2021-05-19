@@ -88,6 +88,10 @@ body {
   scroll-behavior: smooth;
 }
 
+a {
+  text-decoration: none;
+}
+
 /* width */
 ::-webkit-scrollbar {
   width: 10px;
@@ -242,6 +246,10 @@ body {
   &.icon-question {
     @include icon-bind(-826px -456px, 48px);
   }
+
+  &.icon-help {
+    @include icon-bind(-89px -144px);
+  }
 }
 
 // Navbar
@@ -324,6 +332,21 @@ body {
       align-items: center;
       height: 42px;
       cursor: pointer;
+
+      &.active {
+        position: relative;
+        background-color: rgba(255, 255, 255, 0.16);
+        
+        &::before {
+          content: "";
+          top: 0;
+          bottom: 0;
+          left: 0;
+          width: 5px;
+          background-color: #2ca01c;
+          position: absolute;
+        }
+      }
 
       &:hover {
         background-color: rgba(255, 255, 255, 0.16);
@@ -417,7 +440,6 @@ body {
   }
 
   .data {
-    padding-bottom: 16px;
     background-color: $color-white;
     position: relative;
 
@@ -791,6 +813,9 @@ body {
       position: absolute;
       right: 0;
       top: 0;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
 
       .btn-close-dialog {
         height: 40px;
